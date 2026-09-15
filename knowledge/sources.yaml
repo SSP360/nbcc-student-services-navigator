@@ -1,0 +1,84 @@
+sources:
+  - id: NBCC-SS-001
+    title: Student Services at NBCC
+    url: https://nbcc.ca/student-services
+    domain: general_student_services
+    campuses: [all]
+    languages: [en]
+    source_type: webpage
+    authority: nbcc_public
+    retrieved_at: 2026-09-15
+    time_sensitive: true
+    review_status: prototype_public_source
+
+  - id: NBCC-SS-002
+    title: Student Success Coaching
+    url: https://nbcc.ca/student-services/student-success-coaching
+    domain: academic_support
+    campuses: [all]
+    languages: [en]
+    source_type: webpage
+    authority: nbcc_public
+    retrieved_at: 2026-09-15
+    time_sensitive: true
+    review_status: prototype_public_source
+
+  - id: NBCC-SS-003
+    title: PASS Guideline
+    url: https://documents.nbcc.ca/FileCSSearch.ashx?Id=1000.4922
+    domain: academic_support
+    campuses: [all]
+    languages: [en]
+    source_type: document
+    authority: nbcc_public
+    retrieved_at: 2026-09-15
+    time_sensitive: false
+    review_status: prototype_public_source
+
+  - id: NBCC-SS-004
+    title: Accessibility and Inclusion Services
+    url: https://nbcc.ca/student-services/accessibility-inclusion-services
+    domain: accessibility
+    campuses: [all]
+    languages: [en]
+    source_type: webpage
+    authority: nbcc_public
+    retrieved_at: 2026-09-15
+    time_sensitive: true
+    review_status: prototype_public_source
+
+  - id: NBCC-SS-005
+    title: Wellness and Counselling
+    url: https://nbcc.ca/student-services/wellness-counselling
+    domain: wellbeing
+    campuses: [all]
+    languages: [en]
+    source_type: webpage
+    authority: nbcc_public
+    retrieved_at: 2026-09-15
+    time_sensitive: true
+    review_status: prototype_public_source
+
+  - id: NBCC-SS-006
+    title: Student Loans
+    url: https://nbcc.ca/paying-for-college/student-loans
+    domain: financial_support
+    campuses: [all]
+    languages: [en]
+    source_type: webpage
+    authority: nbcc_public
+    retrieved_at: 2026-09-15
+    time_sensitive: true
+    review_status: prototype_public_source
+
+  - id: NBCC-SS-007
+    title: Contact NBCC
+    url: https://nbcc.ca/contact-us
+    domain: contact_routing
+    campuses: [all]
+    languages: [en]
+    source_type: webpage
+    authority: nbcc_public
+    retrieved_at: 2026-09-15
+    time_sensitive: true
+    review_status: prototype_public_source
