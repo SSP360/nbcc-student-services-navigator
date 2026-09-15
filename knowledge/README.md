@@ -53,8 +53,66 @@ knowledge/raw/SOURCE-ID.html
 
 Snapshots are labeled with a retrieval date and indicate whether content is live or snapshot-based.
 
+## Curated Content (Day 2, D2-01)
+
+**knowledge/curated/** contains a controlled, machine-readable corpus of verified, readable
+institutional content extracted from approved sources. This allows later deterministic
+retrieval to search curated text rather than raw webpages.
+
+### Curated File Format
+
+One JSON file per source, named `SOURCE-ID.json` (e.g., `NBCC-SS-001.json`).
+
+### Curated Record Schema
+
+```json
+{
+  "source_id": "NBCC-SS-001",
+  "title": "Student Services at NBCC",
+  "url": "https://nbcc.ca/student-services",
+  "domain": "general_student_services",
+  "campuses": ["all"],
+  "language": "en",
+  "source_type": "webpage",
+  "authority": "nbcc_public",
+  "review_status": "prototype_public_source",
+  "retrieval_timestamp": "2026-09-15T13:18:13.961Z",
+  "retrieval_method": "live-fetch",
+  "http_status": 200,
+  "content_length": 3967,
+  "extracted_text": "...",
+  "retrieval_error": null
+}
+```
+
+### Provenance
+
+Every curated record's `source_id` and `url` must match an entry in `sources.yaml`. This
+traceability is validated automatically (see `lib/curated-sources.ts` and
+`tests/curated-sources.test.ts`).
+
+### Curation Rules
+
+- Only URLs already approved in `sources.yaml` and within the allowlisted domains may be curated.
+- `extracted_text` must be readable, unaltered institutional content (no rewriting,
+  summarization, or "improvement" of meaning). Only navigation, script, and style noise is
+  removed during extraction.
+- `extracted_text` must be at least 500 characters (the minimum usable-content threshold) or
+  the record is invalid.
+- If live fetch fails, `retrieval_method` must be `"snapshot"` and the record must reference a
+  dated snapshot under `knowledge/raw/`. `retrieval_error` records the failure reason when
+  retrieval fails without producing usable content.
+- Curated content is a controlled internal knowledge foundation, not a student-facing
+  capability.
+
+### Validation
+
+Run `npm test` to validate the curated corpus. Validation detects: missing required metadata,
+duplicate source IDs, empty extracted text, invalid URLs, URLs outside the approved allowlist,
+and content below the minimum usable-content threshold.
+
 ## Deferred
 
-- Curated content extraction (Day 2+)
 - Conflict resolution between sources (Day 2+)
 - Multi-language support (Day 2+)
+- Deterministic search over curated content (Day 2+)
