@@ -1,0 +1,66 @@
+{
+  "description": "Golden questions for Day 2 deterministic keyword retrieval evaluation. Each question is a realistic student query grounded in terms actually present in the curated corpus (knowledge/curated/). expected_source_ids lists the source(s) the retrieval should surface.",
+  "corpus_size": 3,
+  "questions": [
+    {
+      "id": "GQ-01",
+      "question": "Who do I contact for wellness and counselling support?",
+      "expected_source_ids": ["NBCC-SS-005"],
+      "grounding": "Source title is 'Wellness and Counselling'; page lists named counsellors and contact emails."
+    },
+    {
+      "id": "GQ-02",
+      "question": "I'm feeling anxious, what resources does NBCC have?",
+      "expected_source_ids": ["NBCC-SS-005"],
+      "grounding": "'Anxiety' is explicitly listed under 'We Can help you with' on the wellness page."
+    },
+    {
+      "id": "GQ-03",
+      "question": "What is myWellness and how do I get 24/7 mental health support?",
+      "expected_source_ids": ["NBCC-SS-005"],
+      "grounding": "'myWellness' and '24/7 Virtual Support' are named on the wellness page."
+    },
+    {
+      "id": "GQ-04",
+      "question": "Is there support for sexual violence or assault on campus?",
+      "expected_source_ids": ["NBCC-SS-005"],
+      "grounding": "Page names the Campus Sexual Assault Support Advocate (CSASA) and sexual violence resources."
+    },
+    {
+      "id": "GQ-05",
+      "question": "How can a Student Success Coach help me transition to college life?",
+      "expected_source_ids": ["NBCC-SS-002"],
+      "grounding": "'Ease Your Transition' is a named section on the Student Success Coaching page."
+    },
+    {
+      "id": "GQ-06",
+      "question": "What is the Nitap Peer Mentor Program?",
+      "expected_source_ids": ["NBCC-SS-002"],
+      "grounding": "'Nitap (Peer) Mentor Program' is explicitly named on the Student Success Coaching page."
+    },
+    {
+      "id": "GQ-07",
+      "question": "Are there recordings of orientation sessions for new students?",
+      "expected_source_ids": ["NBCC-SS-002"],
+      "grounding": "'Orientation for New Students (Recordings)' is a named section on the Student Success Coaching page."
+    },
+    {
+      "id": "GQ-08",
+      "question": "What is NBCC's Early Alert and PASS program?",
+      "expected_source_ids": ["NBCC-SS-001"],
+      "grounding": "'Early Alert Program & PASS' is explicitly named on the general Student Services page."
+    },
+    {
+      "id": "GQ-09",
+      "question": "What programs and services are available to NBCC students overall?",
+      "expected_source_ids": ["NBCC-SS-001"],
+      "grounding": "General overview page introducing the range of Student Services."
+    },
+    {
+      "id": "GQ-10",
+      "question": "What is the NBCC Student Learning Experience Charter?",
+      "expected_source_ids": ["NBCC-SS-001"],
+      "grounding": "'NBCC Student Learning Experience Charter' is explicitly named on the general Student Services page."
+    }
+  ]
+}

@@ -24,16 +24,18 @@
 
 ## Day 2 — Retrieval and Evaluation (Completed)
 
-- [x] D2-01 Curate 3–5 NBCC Student Services sources with provenance and readable text.
-- [x] D2-02 Implement deterministic keyword-based retrieval over curated sources (no model).
-- [x] D2-03 Add dev-only retrieval inspector (API + page) showing matches and reasons.
-- [x] D2-04 Define ~10 golden questions with expected source IDs, grounded in curated text.
-- [x] D2-05 Implement repeatable retrieval evaluation (tests + committed results snapshot).
-- [x] D2-06 Record Day 2 learning, limitations (e.g., footer boilerplate noise), and next-step candidates.
+- [x] D2-01 Curate 3–5 NBCC Student Services sources with provenance and readable text. Evidence: `knowledge/curated/`, `lib/curated-sources.ts`, `tests/curated-sources.test.ts`, `learning-log/DAY_02_D2-01.md`.
+- [x] D2-02 Implement deterministic keyword-based retrieval over curated sources (no model). Evidence: `lib/retrieval.ts`, `tests/retrieval.test.ts`.
+- [x] D2-03 Add dev-only retrieval inspector (API + page) showing matches and reasons. Evidence: `app/dev/retrieval/page.tsx`, `app/api/dev/retrieval/route.ts`.
+- [x] D2-04 Define ~10 golden questions with expected source IDs, grounded in curated text. Evidence: `evals/golden_questions.json`.
+- [x] D2-05 Implement repeatable retrieval evaluation (tests + committed results snapshot). Evidence: `tests/golden-questions.test.ts`, `evals/golden_questions_results.json`.
+- [x] D2-06 Record Day 2 learning, limitations (e.g., footer boilerplate noise), and next-step candidates. Evidence: `learning-log/DAY_02.md`.
+
+Status: all items implemented, tested, and built successfully on branch `feat/d2-01-curate-sources`, merged to `main`. Accepted by the product owner.
 
 ## Day 2 — Follow-up Candidates (Not Started)
 
-- [ ] D2-FU-01 Improve retrieval robustness by stripping footer boilerplate and/or reweighting generic terms (e.g., "support", "campus") for sensitive queries such as sexual-violence support.
+- [ ] D2-FU-01 Improve retrieval robustness by stripping footer boilerplate and/or reweighting generic terms (e.g., "support", "campus") for sensitive queries such as sexual-violence support. **Known limitation observed in Day 2**: caused a top-1 near-miss on golden question GQ-04 (NBCC-SS-002 scored 45 vs. NBCC-SS-005's 44; NBCC-SS-005 still placed second, within top 3). Evidence: `evals/golden_questions_results.json` (GQ-04 entry), `learning-log/DAY_02.md`. Not started; explicitly excluded from Day 3.
 
 ## Explicitly deferred
 
