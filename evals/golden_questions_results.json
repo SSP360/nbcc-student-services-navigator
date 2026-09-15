@@ -1,0 +1,407 @@
+{
+  "generated_at": "2026-09-15T15:18:00.163Z",
+  "corpus_size": 3,
+  "total_questions": 10,
+  "top1_pass_count": 9,
+  "top1_pass_rate": "9/10",
+  "top3_pass_count": 10,
+  "top3_pass_rate": "10/10",
+  "success_measure": "At least 8 of 10 golden questions return an expected source in the top three results (Day 2 epic, Issue #2)",
+  "success_measure_met": true,
+  "note": "With a 3-document corpus, \"top 3\" is a weak bar on its own since it can include the entire corpus; top-1 pass rate is reported alongside for a more meaningful signal.",
+  "results": [
+    {
+      "id": "GQ-01",
+      "question": "Who do I contact for wellness and counselling support?",
+      "expected_source_ids": [
+        "NBCC-SS-005"
+      ],
+      "ranked_results": [
+        {
+          "source_id": "NBCC-SS-005",
+          "score": 56,
+          "matched_terms": [
+            "contact",
+            "wellness",
+            "counselling",
+            "support"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-002",
+          "score": 30,
+          "matched_terms": [
+            "contact",
+            "wellness",
+            "counselling",
+            "support"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-001",
+          "score": 13,
+          "matched_terms": [
+            "contact",
+            "wellness",
+            "counselling",
+            "support"
+          ]
+        }
+      ],
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "id": "GQ-02",
+      "question": "I'm feeling anxious, what resources does NBCC have?",
+      "expected_source_ids": [
+        "NBCC-SS-005"
+      ],
+      "ranked_results": [
+        {
+          "source_id": "NBCC-SS-005",
+          "score": 28,
+          "matched_terms": [
+            "resources",
+            "nbcc"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-001",
+          "score": 25,
+          "matched_terms": [
+            "resources",
+            "nbcc"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-002",
+          "score": 21,
+          "matched_terms": [
+            "resources",
+            "nbcc"
+          ]
+        }
+      ],
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "id": "GQ-03",
+      "question": "What is myWellness and how do I get 24/7 mental health support?",
+      "expected_source_ids": [
+        "NBCC-SS-005"
+      ],
+      "ranked_results": [
+        {
+          "source_id": "NBCC-SS-005",
+          "score": 48,
+          "matched_terms": [
+            "mywellness",
+            "get",
+            "24",
+            "mental",
+            "health",
+            "support"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-002",
+          "score": 35,
+          "matched_terms": [
+            "get",
+            "health",
+            "support"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-001",
+          "score": 13,
+          "matched_terms": [
+            "get",
+            "24",
+            "health",
+            "support"
+          ]
+        }
+      ],
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "id": "GQ-04",
+      "question": "Is there support for sexual violence or assault on campus?",
+      "expected_source_ids": [
+        "NBCC-SS-005"
+      ],
+      "ranked_results": [
+        {
+          "source_id": "NBCC-SS-002",
+          "score": 45,
+          "matched_terms": [
+            "support",
+            "campus"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-005",
+          "score": 44,
+          "matched_terms": [
+            "support",
+            "sexual",
+            "violence",
+            "assault",
+            "campus"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-001",
+          "score": 18,
+          "matched_terms": [
+            "support",
+            "campus"
+          ]
+        }
+      ],
+      "top1_match": false,
+      "top3_match": true
+    },
+    {
+      "id": "GQ-05",
+      "question": "How can a Student Success Coach help me transition to college life?",
+      "expected_source_ids": [
+        "NBCC-SS-002"
+      ],
+      "ranked_results": [
+        {
+          "source_id": "NBCC-SS-002",
+          "score": 81,
+          "matched_terms": [
+            "student",
+            "success",
+            "coach",
+            "help",
+            "transition",
+            "college",
+            "life"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-001",
+          "score": 47,
+          "matched_terms": [
+            "student",
+            "success",
+            "coach",
+            "help",
+            "college"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-005",
+          "score": 24,
+          "matched_terms": [
+            "student",
+            "success",
+            "help",
+            "transition",
+            "college",
+            "life"
+          ]
+        }
+      ],
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "id": "GQ-06",
+      "question": "What is the Nitap Peer Mentor Program?",
+      "expected_source_ids": [
+        "NBCC-SS-002"
+      ],
+      "ranked_results": [
+        {
+          "source_id": "NBCC-SS-002",
+          "score": 19,
+          "matched_terms": [
+            "nitap",
+            "peer",
+            "mentor",
+            "program"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-001",
+          "score": 7,
+          "matched_terms": [
+            "program"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-005",
+          "score": 1,
+          "matched_terms": [
+            "program"
+          ]
+        }
+      ],
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "id": "GQ-07",
+      "question": "Are there recordings of orientation sessions for new students?",
+      "expected_source_ids": [
+        "NBCC-SS-002"
+      ],
+      "ranked_results": [
+        {
+          "source_id": "NBCC-SS-002",
+          "score": 13,
+          "matched_terms": [
+            "recordings",
+            "orientation",
+            "new",
+            "students"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-005",
+          "score": 4,
+          "matched_terms": [
+            "students"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-001",
+          "score": 2,
+          "matched_terms": [
+            "new"
+          ]
+        }
+      ],
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "id": "GQ-08",
+      "question": "What is NBCC's Early Alert and PASS program?",
+      "expected_source_ids": [
+        "NBCC-SS-001"
+      ],
+      "ranked_results": [
+        {
+          "source_id": "NBCC-SS-001",
+          "score": 46,
+          "matched_terms": [
+            "nbcc",
+            "early",
+            "alert",
+            "pass",
+            "program"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-005",
+          "score": 23,
+          "matched_terms": [
+            "nbcc",
+            "program"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-002",
+          "score": 20,
+          "matched_terms": [
+            "nbcc",
+            "program"
+          ]
+        }
+      ],
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "id": "GQ-09",
+      "question": "What programs and services are available to NBCC students overall?",
+      "expected_source_ids": [
+        "NBCC-SS-001"
+      ],
+      "ranked_results": [
+        {
+          "source_id": "NBCC-SS-001",
+          "score": 45,
+          "matched_terms": [
+            "programs",
+            "services",
+            "available",
+            "nbcc"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-002",
+          "score": 33,
+          "matched_terms": [
+            "services",
+            "available",
+            "nbcc",
+            "students"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-005",
+          "score": 32,
+          "matched_terms": [
+            "services",
+            "available",
+            "nbcc",
+            "students"
+          ]
+        }
+      ],
+      "top1_match": true,
+      "top3_match": true
+    },
+    {
+      "id": "GQ-10",
+      "question": "What is the NBCC Student Learning Experience Charter?",
+      "expected_source_ids": [
+        "NBCC-SS-001"
+      ],
+      "ranked_results": [
+        {
+          "source_id": "NBCC-SS-001",
+          "score": 56,
+          "matched_terms": [
+            "nbcc",
+            "student",
+            "learning",
+            "experience",
+            "charter"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-002",
+          "score": 55,
+          "matched_terms": [
+            "nbcc",
+            "student",
+            "learning",
+            "experience"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-005",
+          "score": 33,
+          "matched_terms": [
+            "nbcc",
+            "student",
+            "experience"
+          ]
+        }
+      ],
+      "top1_match": true,
+      "top3_match": true
+    }
+  ]
+}

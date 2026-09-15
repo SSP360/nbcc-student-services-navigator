@@ -1,0 +1,53 @@
+import { NextResponse } from 'next/server'
+import { RetrievedSourceContent } from '@/lib/types'
+import { getSourceById, fetchSourceContent } from '@/lib/sources'
+
+export async function GET(
+  _request: unknown,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse<RetrievedSourceContent | { error: string }>> {
+  try {
+    const { id } = await params
+    const source = getSourceById(id)
+
+    if (!source) {
+      return NextResponse.json(
+        { error: `Source not found: ${id}` },
+        { status: 404 }
+      )
+    }
+
+    try {
+      const content = await fetchSourceContent(source)
+      const response: RetrievedSourceContent = {
+        id: source.id,
+        title: source.title,
+        url: source.url,
+        retrieved_at: content.timestamp,
+        retrieval_method: content.method,
+        retrieval_status: 'success',
+        extracted_text: content.text,
+        extracted_text_length: content.text.length,
+        http_status: content.httpStatus,
+        content_length: content.contentLength,
+      }
+      return NextResponse.json(response, { status: 200 })
+    } catch (fetchError) {
+      const response: RetrievedSourceContent = {
+        id: source.id,
+        title: source.title,
+        url: source.url,
+        retrieved_at: new Date().toISOString(),
+        retrieval_method: 'live-fetch',
+        retrieval_status: 'error',
+        error: fetchError instanceof Error ? fetchError.message : String(fetchError),
+      }
+      return NextResponse.json(response, { status: 200 })
+    }
+  } catch (error) {
+    return NextResponse.json(
+      { error: `Server error: ${error instanceof Error ? error.message : String(error)}` },
+      { status: 500 }
+    )
+  }
+}

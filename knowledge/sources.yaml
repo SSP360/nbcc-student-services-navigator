@@ -7,7 +7,7 @@ sources:
     languages: [en]
     source_type: webpage
     authority: nbcc_public
-    retrieved_at: 2026-09-15
+    retrieved_at: "2026-09-15T00:00:00Z"
     time_sensitive: true
     review_status: prototype_public_source
 
@@ -19,7 +19,7 @@ sources:
     languages: [en]
     source_type: webpage
     authority: nbcc_public
-    retrieved_at: 2026-09-15
+    retrieved_at: "2026-09-15T00:00:00Z"
     time_sensitive: true
     review_status: prototype_public_source
 
@@ -31,7 +31,7 @@ sources:
     languages: [en]
     source_type: document
     authority: nbcc_public
-    retrieved_at: 2026-09-15
+    retrieved_at: "2026-09-15T00:00:00Z"
     time_sensitive: false
     review_status: prototype_public_source
 
@@ -43,7 +43,7 @@ sources:
     languages: [en]
     source_type: webpage
     authority: nbcc_public
-    retrieved_at: 2026-09-15
+    retrieved_at: "2026-09-15T00:00:00Z"
     time_sensitive: true
     review_status: prototype_public_source
 
@@ -55,7 +55,7 @@ sources:
     languages: [en]
     source_type: webpage
     authority: nbcc_public
-    retrieved_at: 2026-09-15
+    retrieved_at: "2026-09-15T00:00:00Z"
     time_sensitive: true
     review_status: prototype_public_source
 
@@ -67,7 +67,7 @@ sources:
     languages: [en]
     source_type: webpage
     authority: nbcc_public
-    retrieved_at: 2026-09-15
+    retrieved_at: "2026-09-15T00:00:00Z"
     time_sensitive: true
     review_status: prototype_public_source
 
@@ -79,6 +79,6 @@ sources:
     languages: [en]
     source_type: webpage
     authority: nbcc_public
-    retrieved_at: 2026-09-15
+    retrieved_at: "2026-09-15T00:00:00Z"
     time_sensitive: true
     review_status: prototype_public_source
