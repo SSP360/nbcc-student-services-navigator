@@ -31,6 +31,9 @@ export interface RetrievedSourceContent {
   retrieval_method: 'live-fetch' | 'snapshot'
   retrieval_status: 'success' | 'error'
   extracted_text?: string
+  extracted_text_length?: number
+  http_status?: number
+  content_length?: number
   error?: string
 }
 

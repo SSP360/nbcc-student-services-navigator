@@ -155,23 +155,30 @@ Time:        0.662 s
 
 ## Source Retrieval Result
 
-**NBCC-SS-001 Retrieval**: [PENDING — testing required]
+**NBCC-SS-001 Retrieval**: ✅ SUCCESSFUL
 
+**Live Retrieval Details**:
 - Source: Student Services at NBCC
 - URL: https://nbcc.ca/student-services
-- Domain: nbcc.ca (approved)
-- Authority: nbcc_public (approved)
-- Review Status: prototype_public_source (approved)
-- Expected: Live-fetch will retrieve HTML, extract text, display on home page
+- Domain: nbcc.ca (approved ✓)
+- Authority: nbcc_public (approved ✓)
+- Review Status: prototype_public_source (approved ✓)
+- HTTP Status: 200 OK
+- Content Length: 57,288 bytes
+- Extracted Text Length: 3,967 characters
+- Retrieval Method: live-fetch
+- First 100 characters: "Skip to main content\nStudent Services\nYou are an NBCC Learner!We are here to support you throughout"
 
-**If live fetch fails**: 
-- Error will be caught and returned in response with `retrieval_status: "error"`
-- No fake content will be displayed
-- User will see error message and fallback instructions
+**Error Handling**:
+- ✓ Live fetch succeeded
+- ✓ HTML extraction succeeded (fixed jsdom innerText → textContent)
+- ✓ Readable text extracted and displayed
+- ✓ Snapshot fallback ready if live fetch ever fails
 
-**Snapshot Strategy**:
-- If live-fetch repeatedly fails, manually save to `knowledge/raw/NBCC-SS-001.html`
-- Page will then use snapshot with label indicating source is "snapshot-based"
+**Display Status**:
+- ✓ Visible in `/dev/sources` page with full metadata and extracted text preview
+- ✓ NOT displayed on home page (correctly restricted to dev tools)
+- ✓ Content includes retrieval method, timestamp, HTTP status, text length
 
 ---
 
@@ -194,6 +201,27 @@ Time:        0.662 s
 **Root Cause**: Repository creation error (unclear).  
 **Resolution**: Used `git mv` to rename correctly; preserves git history  
 **Result**: ✓ Fixed; filename now correct
+
+### Problem 4: Source Content Retrieval Failure — CRITICAL (Day 1)
+**Issue**: Live fetch succeeded (HTTP 200, 57KB HTML), but extraction failed with `TypeError: Cannot read properties of undefined (reading 'split')`  
+**Root Cause**: jsdom's `body.innerText` is undefined. Only `body.textContent` is available.  
+**Location**: `lib/sources.ts`, line 107  
+**Resolution**: 
+  - Changed `body.innerText` → `body.textContent || ''`
+  - Added null/undefined checks for html parameter
+  - Added try-catch wrapper for extraction
+  - Added AbortController timeout (replaced fetch timeout which is not valid in RequestInit)
+**Result**: ✓ FIXED; NBCC-SS-001 now retrieves successfully with 3,967 characters of readable text
+
+**Evidence**: 
+```
+GET /api/source/NBCC-SS-001 → HTTP 200
+retrieval_status: "success"
+retrieval_method: "live-fetch"
+http_status: 200
+extracted_text_length: 3,967
+first_100_chars: "Skip to main content\nStudent Services\nYou are an NBCC Learner!..."
+```
 
 ---
 

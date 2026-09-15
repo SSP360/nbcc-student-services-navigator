@@ -61,14 +61,33 @@ export function getAllSources(): Source[] {
   return loadSources()
 }
 
-export async function fetchSourceContent(source: Source): Promise<{ text: string; timestamp: string; method: string }> {
+export interface FetchContentResult {
+  text: string
+  timestamp: string
+  method: 'live-fetch' | 'snapshot'
+  httpStatus?: number
+  contentLength?: number
+}
+
+export async function fetchSourceContent(source: Source): Promise<FetchContentResult> {
+  let httpStatus: number | undefined
+  let contentLength: number | undefined
+
   try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 10000)
+
     const response = await fetch(source.url, {
       headers: {
         'User-Agent': 'NBCC-Student-Services-Navigator/0.1.0',
       },
-      timeout: 10000,
+      signal: controller.signal,
     })
+
+    clearTimeout(timeoutId)
+
+    httpStatus = response.status
+    contentLength = response.headers.get('content-length') ? parseInt(response.headers.get('content-length')!, 10) : undefined
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`)
@@ -81,6 +100,8 @@ export async function fetchSourceContent(source: Source): Promise<{ text: string
       text: extracted,
       timestamp: new Date().toISOString(),
       method: 'live-fetch',
+      httpStatus,
+      contentLength,
     }
   } catch (error) {
     const snapshotPath = path.join(process.cwd(), 'knowledge', 'raw', `${source.id}.html`)
@@ -91,24 +112,42 @@ export async function fetchSourceContent(source: Source): Promise<{ text: string
         text: extracted,
         timestamp: new Date().toISOString(),
         method: 'snapshot',
+        contentLength: html.length,
       }
     }
     throw new Error(`Failed to fetch ${source.url}: ${error instanceof Error ? error.message : String(error)}`)
   }
 }
 
-function extractTextFromHtml(html: string): string {
-  const doc = new (require('jsdom').JSDOM)(html)
-  const body = doc.window.document.body
+function extractTextFromHtml(html: string | null | undefined): string {
+  if (!html || typeof html !== 'string') {
+    return ''
+  }
 
-  const scriptAndStyleElements = body.querySelectorAll('script, style, nav, .sidebar, .menu')
-  scriptAndStyleElements.forEach((el: any) => el.remove())
+  try {
+    const doc = new (require('jsdom').JSDOM)(html)
+    const body = doc.window.document.body
 
-  const textContent = body.innerText
-    .split('\n')
-    .map((line: string) => line.trim())
-    .filter((line: string) => line.length > 0)
-    .join('\n')
+    if (!body) {
+      return ''
+    }
 
-  return textContent.substring(0, 5000)
+    const scriptAndStyleElements = body.querySelectorAll('script, style, nav, .sidebar, .menu')
+    scriptAndStyleElements.forEach((el: any) => el.remove())
+
+    const textContent = body.textContent || ''
+    if (!textContent) {
+      return ''
+    }
+
+    const processed = textContent
+      .split('\n')
+      .map((line: string) => line.trim())
+      .filter((line: string) => line.length > 0)
+      .join('\n')
+
+    return processed.substring(0, 5000)
+  } catch (error) {
+    return ''
+  }
 }

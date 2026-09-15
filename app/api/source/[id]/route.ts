@@ -1,9 +1,9 @@
-import { NextResponse, NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 import { RetrievedSourceContent } from '@/lib/types'
 import { getSourceById, fetchSourceContent } from '@/lib/sources'
 
 export async function GET(
-  request: NextRequest,
+  _request: unknown,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<RetrievedSourceContent | { error: string }>> {
   try {
@@ -24,9 +24,12 @@ export async function GET(
         title: source.title,
         url: source.url,
         retrieved_at: content.timestamp,
-        retrieval_method: content.method as 'live-fetch' | 'snapshot',
+        retrieval_method: content.method,
         retrieval_status: 'success',
         extracted_text: content.text,
+        extracted_text_length: content.text.length,
+        http_status: content.httpStatus,
+        content_length: content.contentLength,
       }
       return NextResponse.json(response, { status: 200 })
     } catch (fetchError) {
