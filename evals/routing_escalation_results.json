@@ -1,11 +1,34 @@
 {
-  "generated_at": "2026-09-15T19:02:16.146Z",
+  "generated_at": "2026-09-15T19:20:42.536Z",
   "total_questions": 10,
-  "journey_pass_count": 10,
-  "journey_pass_rate": "10/10",
-  "escalation_pass_count": 10,
-  "escalation_pass_rate": "10/10",
-  "note": "GQ-04 expected_journey is set to the actual, currently-correct behavior (academic_support) rather than the intended wellbeing_safety domain, because journey routing uses the top-1 retrieval result and NBCC-SS-002 currently outranks NBCC-SS-005 for this question (the known D2-FU-01 footer-boilerplate near-miss, score 45 vs 44). Escalation for GQ-04 is independent of retrieval ranking: the crisis_or_safety trigger always targets NBCC-SS-005 (Wellness and Counselling) directly per ESCALATION_POLICY.md Contact Routes, regardless of the derived journey, so the escalation target is correct even though the journey label is not.",
+  "metrics": {
+    "journey_classification_accuracy": {
+      "pass_count": 9,
+      "total": 10,
+      "rate": "9/10",
+      "known_failures": [
+        "GQ-04"
+      ]
+    },
+    "escalation_trigger_accuracy": {
+      "pass_count": 10,
+      "total": 10,
+      "rate": "10/10",
+      "known_failures": []
+    },
+    "escalation_target_accuracy": {
+      "pass_count": 1,
+      "total": 1,
+      "rate": "1/1",
+      "note": "Only questions where expected_escalation=true and an expected_escalation_target_id is defined are counted. Among the 10 golden questions, only GQ-04 currently escalates."
+    }
+  },
+  "known_defect": {
+    "id": "GQ-04",
+    "description": "Journey classification for GQ-04 is expected to be wellbeing_safety (its correct domain) but the router currently produces academic_support, because journey routing uses the top-1 retrieval result and NBCC-SS-002 currently outranks NBCC-SS-005 for this question. This is the known D2-FU-01 footer-boilerplate near-miss (score 45 vs 44), tracked separately in product/BACKLOG.md and explicitly out of scope for Day 3.",
+    "escalation_unaffected": "Escalation-trigger and escalation-target accuracy for GQ-04 are both correct: the crisis_or_safety trigger matches the query text directly (independent of retrieval/journey) and always targets NBCC-SS-005 (Wellness and Counselling)."
+  },
+  "note": "This snapshot reports the honest, current state. expected_journey values in evals/golden_questions.json reflect product-intended (correct) behavior, not the system's current output. The journey_classification_accuracy known_failures list is preserved as documented evidence of D2-FU-01 affecting the routing layer and must not be edited to force a 10/10 pass without the underlying defect actually being fixed.",
   "results": [
     {
       "id": "GQ-01",
@@ -15,10 +38,13 @@
       "journey_match": true,
       "expected_escalation": false,
       "actual_escalation": false,
+      "escalation_trigger_match": true,
       "escalation_trigger": "none",
       "escalation_matched_term": null,
-      "escalation_target_service_id": null,
-      "escalation_match": true
+      "expected_escalation_target_id": null,
+      "actual_escalation_target_id": null,
+      "escalation_target_match": null,
+      "known_defect_note": null
     },
     {
       "id": "GQ-02",
@@ -28,10 +54,13 @@
       "journey_match": true,
       "expected_escalation": false,
       "actual_escalation": false,
+      "escalation_trigger_match": true,
       "escalation_trigger": "none",
       "escalation_matched_term": null,
-      "escalation_target_service_id": null,
-      "escalation_match": true
+      "expected_escalation_target_id": null,
+      "actual_escalation_target_id": null,
+      "escalation_target_match": null,
+      "known_defect_note": null
     },
     {
       "id": "GQ-03",
@@ -41,23 +70,29 @@
       "journey_match": true,
       "expected_escalation": false,
       "actual_escalation": false,
+      "escalation_trigger_match": true,
       "escalation_trigger": "none",
       "escalation_matched_term": null,
-      "escalation_target_service_id": null,
-      "escalation_match": true
+      "expected_escalation_target_id": null,
+      "actual_escalation_target_id": null,
+      "escalation_target_match": null,
+      "known_defect_note": null
     },
     {
       "id": "GQ-04",
       "question": "Is there support for sexual violence or assault on campus?",
-      "expected_journey": "academic_support",
+      "expected_journey": "wellbeing_safety",
       "actual_journey": "academic_support",
-      "journey_match": true,
+      "journey_match": false,
       "expected_escalation": true,
       "actual_escalation": true,
+      "escalation_trigger_match": true,
       "escalation_trigger": "crisis_or_safety",
       "escalation_matched_term": "assault",
-      "escalation_target_service_id": "NBCC-SS-005",
-      "escalation_match": true
+      "expected_escalation_target_id": "NBCC-SS-005",
+      "actual_escalation_target_id": "NBCC-SS-005",
+      "escalation_target_match": true,
+      "known_defect_note": "This question is EXPECTED to route to wellbeing_safety (its correct domain per grounding above), but the router currently produces academic_support, because journey routing uses the top-1 retrieval result and NBCC-SS-002 currently outranks NBCC-SS-005 for this query (D2-FU-01: footer-boilerplate near-miss, score 45 vs. 44). This is a known, currently-failing test case, deliberately left failing as documented evidence of D2-FU-01's effect on the routing layer — it is NOT weakened or bypassed to force a pass. Escalation is unaffected: the crisis_or_safety trigger matches 'assault'/'violence' in the query text directly (independent of retrieval/journey) and always targets NBCC-SS-005 (Wellness and Counselling), so this question still escalates correctly to the right human contact despite the journey-label defect."
     },
     {
       "id": "GQ-05",
@@ -67,10 +102,13 @@
       "journey_match": true,
       "expected_escalation": false,
       "actual_escalation": false,
+      "escalation_trigger_match": true,
       "escalation_trigger": "none",
       "escalation_matched_term": null,
-      "escalation_target_service_id": null,
-      "escalation_match": true
+      "expected_escalation_target_id": null,
+      "actual_escalation_target_id": null,
+      "escalation_target_match": null,
+      "known_defect_note": null
     },
     {
       "id": "GQ-06",
@@ -80,10 +118,13 @@
       "journey_match": true,
       "expected_escalation": false,
       "actual_escalation": false,
+      "escalation_trigger_match": true,
       "escalation_trigger": "none",
       "escalation_matched_term": null,
-      "escalation_target_service_id": null,
-      "escalation_match": true
+      "expected_escalation_target_id": null,
+      "actual_escalation_target_id": null,
+      "escalation_target_match": null,
+      "known_defect_note": null
     },
     {
       "id": "GQ-07",
@@ -93,10 +134,13 @@
       "journey_match": true,
       "expected_escalation": false,
       "actual_escalation": false,
+      "escalation_trigger_match": true,
       "escalation_trigger": "none",
       "escalation_matched_term": null,
-      "escalation_target_service_id": null,
-      "escalation_match": true
+      "expected_escalation_target_id": null,
+      "actual_escalation_target_id": null,
+      "escalation_target_match": null,
+      "known_defect_note": null
     },
     {
       "id": "GQ-08",
@@ -106,10 +150,13 @@
       "journey_match": true,
       "expected_escalation": false,
       "actual_escalation": false,
+      "escalation_trigger_match": true,
       "escalation_trigger": "none",
       "escalation_matched_term": null,
-      "escalation_target_service_id": null,
-      "escalation_match": true
+      "expected_escalation_target_id": null,
+      "actual_escalation_target_id": null,
+      "escalation_target_match": null,
+      "known_defect_note": null
     },
     {
       "id": "GQ-09",
@@ -119,10 +166,13 @@
       "journey_match": true,
       "expected_escalation": false,
       "actual_escalation": false,
+      "escalation_trigger_match": true,
       "escalation_trigger": "none",
       "escalation_matched_term": null,
-      "escalation_target_service_id": null,
-      "escalation_match": true
+      "expected_escalation_target_id": null,
+      "actual_escalation_target_id": null,
+      "escalation_target_match": null,
+      "known_defect_note": null
     },
     {
       "id": "GQ-10",
@@ -132,10 +182,13 @@
       "journey_match": true,
       "expected_escalation": false,
       "actual_escalation": false,
+      "escalation_trigger_match": true,
       "escalation_trigger": "none",
       "escalation_matched_term": null,
-      "escalation_target_service_id": null,
-      "escalation_match": true
+      "expected_escalation_target_id": null,
+      "actual_escalation_target_id": null,
+      "escalation_target_match": null,
+      "known_defect_note": null
     }
   ]
 }

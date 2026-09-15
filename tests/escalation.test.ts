@@ -35,6 +35,40 @@ describe('decideEscalation — crisis_or_safety trigger (ESCALATION_POLICY.md tr
   })
 })
 
+describe('decideEscalation — source_error trigger (ESCALATION_POLICY.md trigger 6)', () => {
+  test('escalates when a retrieval error is passed in', () => {
+    const decision = decideEscalation('a normal question', 'general_contact', 0, 'ENOENT: no such file or directory')
+    expect(decision.should_escalate).toBe(true)
+    expect(decision.trigger).toBe('source_error')
+    expect(decision.reason).toContain('ENOENT')
+  })
+
+  test('routes source_error to general contact', () => {
+    const decision = decideEscalation('a normal question', 'academic_support', 0, 'corpus corrupted')
+    expect(decision.target_service_id).toBe('NBCC-SS-007')
+  })
+
+  test('does not fire when no retrieval error is passed (undefined)', () => {
+    const decision = decideEscalation('a normal question', 'academic_support', 2, undefined)
+    expect(decision.trigger).not.toBe('source_error')
+  })
+
+  test('does not fire when retrieval error is explicitly null', () => {
+    const decision = decideEscalation('a normal question', 'academic_support', 2, null)
+    expect(decision.trigger).not.toBe('source_error')
+  })
+
+  test('source_error takes priority over unmatched_query (both correspond to zero results, but mean different things)', () => {
+    const decision = decideEscalation('a normal question', 'general_contact', 0, 'disk read failure')
+    expect(decision.trigger).toBe('source_error')
+  })
+
+  test('crisis_or_safety still takes priority over source_error (safety check does not depend on retrieval succeeding)', () => {
+    const decision = decideEscalation('I need help, this is an emergency', 'general_contact', 0, 'disk read failure')
+    expect(decision.trigger).toBe('crisis_or_safety')
+  })
+})
+
 describe('decideEscalation — unmatched_query trigger (ESCALATION_POLICY.md trigger 4)', () => {
   test('escalates when retrieval found zero results', () => {
     const decision = decideEscalation('some completely unrelated question', 'general_contact', 0)

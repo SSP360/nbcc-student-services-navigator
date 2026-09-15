@@ -9,15 +9,22 @@ import { getSourceById } from './sources'
  * curated wellness page already addresses informationally) so escalation
  * stays precise and reviewable rather than over-triggering.
  *
- * "Source Error" (ESCALATION_POLICY.md trigger 6) is not implemented here:
- * this engine runs deterministic keyword search over static, already
- * curated content, which does not perform a live fetch and cannot fail at
- * query time. That trigger applies to Day 1/D2's live-retrieval path
- * (lib/sources.ts), not to this routing/escalation layer.
+ * "Source Error" (ESCALATION_POLICY.md trigger 6) IS implemented here via
+ * the optional `retrievalError` parameter. Although this engine's normal
+ * path is deterministic keyword search over static, already-curated
+ * content (no live fetch), the corpus load itself
+ * (lib/curated-sources.ts's loadAllCuratedSources -> fs.readFileSync +
+ * JSON.parse per curated file) can genuinely throw at query time — a
+ * missing curated file, a corrupted JSON file, or a missing
+ * knowledge/curated/ directory. That is a real "source retrieval fails"
+ * condition at this layer, distinct from `unmatched_query` (corpus loaded
+ * fine; nothing matched). Callers (see app/api/dev/routing/route.ts) must
+ * catch that exception and pass its message here as `retrievalError`.
  */
 
 export type EscalationTrigger =
   | 'crisis_or_safety'
+  | 'source_error'
   | 'personalized_decision'
   | 'accommodation_request'
   | 'unmatched_query'
@@ -99,7 +106,8 @@ function resolveTargetService(sourceId: string | null): Pick<EscalationDecision,
 export function decideEscalation(
   query: string,
   journey: Journey,
-  retrievalResultCount: number
+  retrievalResultCount: number,
+  retrievalError?: string | null
 ): EscalationDecision {
   const crisisMatch = findMatch(query, CRISIS_SAFETY_TERMS)
   if (crisisMatch) {
@@ -108,13 +116,25 @@ export function decideEscalation(
     // Routes table names it explicitly for "Mental health/wellness", and a
     // safety/crisis disclosure must not be routed by whichever domain
     // retrieval happened to rank first. This is intentionally independent
-    // of the `journey` parameter/argument.
+    // of the `journey` parameter/argument, and is checked before
+    // `source_error` below because a crisis/safety term match does not
+    // depend on retrieval having succeeded at all.
     return {
       should_escalate: true,
       trigger: 'crisis_or_safety',
       matched_term: crisisMatch,
       ...resolveTargetService(JOURNEY_CONTACT_SOURCE.wellbeing_safety),
       reason: `Query contains a sensitive/safety term ("${crisisMatch}"). Per ESCALATION_POLICY.md trigger 1 (Sensitive Personal Information), this escalates to human support (Wellness and Counselling) rather than an automated answer, independent of retrieval-derived journey.`,
+    }
+  }
+
+  if (retrievalError) {
+    return {
+      should_escalate: true,
+      trigger: 'source_error',
+      matched_term: null,
+      ...resolveTargetService(JOURNEY_CONTACT_SOURCE.general_contact),
+      reason: `Source retrieval failed ("${retrievalError}"). Per ESCALATION_POLICY.md trigger 6 (Source Error), this requires human verification rather than an automated answer.`,
     }
   }
 

@@ -31,9 +31,10 @@
       "question": "Is there support for sexual violence or assault on campus?",
       "expected_source_ids": ["NBCC-SS-005"],
       "grounding": "Page names the Campus Sexual Assault Support Advocate (CSASA) and sexual violence resources.",
-      "expected_journey": "academic_support",
+      "expected_journey": "wellbeing_safety",
       "expected_escalation": true,
-      "escalation_note": "Journey routing uses the top-1 retrieval result, which for this question is NBCC-SS-002 (academic_support) due to the known D2-FU-01 footer-boilerplate near-miss (score 45 vs. 44; NBCC-SS-005 still ranks #2). expected_journey reflects that actual, currently-correct behavior rather than the intended domain, so this test does not silently mask the limitation. The escalation layer is independent of retrieval ranking: it matches 'assault'/'violence' directly against ESCALATION_POLICY.md trigger 1 (Sensitive Personal Information) and escalates regardless of which source ranked first. This is the safety property that matters most for this question, and is why D2-FU-01 remains a backlog item rather than a blocker: the current system does not silently answer a safety-sensitive question with the wrong journey's informational content — it escalates to human support either way."
+      "expected_escalation_target_id": "NBCC-SS-005",
+      "known_defect_note": "This question is EXPECTED to route to wellbeing_safety (its correct domain per grounding above), but the router currently produces academic_support, because journey routing uses the top-1 retrieval result and NBCC-SS-002 currently outranks NBCC-SS-005 for this query (D2-FU-01: footer-boilerplate near-miss, score 45 vs. 44). This is a known, currently-failing test case, deliberately left failing as documented evidence of D2-FU-01's effect on the routing layer — it is NOT weakened or bypassed to force a pass. Escalation is unaffected: the crisis_or_safety trigger matches 'assault'/'violence' in the query text directly (independent of retrieval/journey) and always targets NBCC-SS-005 (Wellness and Counselling), so this question still escalates correctly to the right human contact despite the journey-label defect."
     },
     {
       "id": "GQ-05",

@@ -22,10 +22,22 @@ export async function GET(
 
   const query = request.nextUrl.searchParams.get('q') || ''
 
+  // Retrieval failure (ESCALATION_POLICY.md trigger 6, Source Error) is
+  // caught here specifically, at the point retrieval is actually invoked,
+  // rather than allowed to fall through to a generic 500. This lets
+  // decideEscalation() convert a genuine retrieval failure into a proper
+  // escalation decision instead of an opaque server error.
+  let results: RetrievalResult[] = []
+  let retrievalError: string | null = null
   try {
-    const results = searchCuratedSources(query)
+    results = searchCuratedSources(query)
+  } catch (error) {
+    retrievalError = error instanceof Error ? error.message : String(error)
+  }
+
+  try {
     const routing = routeQuery(query, results)
-    const escalation = decideEscalation(query, routing.journey, results.length)
+    const escalation = decideEscalation(query, routing.journey, results.length, retrievalError)
 
     return NextResponse.json(
       {
