@@ -99,3 +99,82 @@ As NBCC and Lucentrix, we want the Student Services Navigator to fix the known r
 - [ ] D4-03 Re-run retrieval, routing, and escalation evaluations (`tests/golden-questions.test.ts`, `tests/routing-escalation-golden-questions.test.ts`) and update `evals/golden_questions_results.json` and `evals/routing_escalation_results.json` to reflect the new, fully-green state (10/10 journey, 10/10 escalation-trigger, 1/1 escalation-target for GQ-04).
 - [ ] D4-04 Update `learning-log/DAY_04.md` and `product/BACKLOG.md` to record the retrieval changes, evidence, and any residual limitations, and to mark D2-FU-01 as closed once GQ-04's journey test passes and journey accuracy reaches 10/10.
 - [ ] D4-05 Run full `npm test` and `npm run build` as the Day 4 acceptance gate, confirming that all suites are green (no deliberate failing tests remain) and that production-mode dev routes remain correctly 404-gated.
+
+## Day 5 — Student-Facing Guided Experience (Planned)
+
+### Day 5 Epic – Safe Deterministic Student Guidance
+
+**Epic description**  
+As NBCC and Lucentrix, we want a student-facing guided experience built on the validated deterministic retrieval, routing and escalation foundation. It must remain clearly labelled as a concept demonstrator, use public information only, cite its sources, provide clear next steps, and hand sensitive or uncertain cases to humans rather than making advice or eligibility decisions.
+
+**Epic acceptance criteria**
+
+- A student can enter a question and receive source-grounded information, a clear next step and relevant human contact guidance.
+- The student-facing response is derived only from existing public curated content plus deterministic retrieval/routing/escalation output; no LLM-generated answer is introduced.
+- Sensitive, accommodation, personalized-decision, urgent, unmatched and source-error conditions present a safe human-escalation path rather than unsupported advice.
+- Source title, link and provenance remain visible; the prototype disclaimer remains prominent.
+- The existing `/dev/*` inspector routes remain unavailable in production and are not exposed as student UI.
+
+### Day 5 Backlog Items
+
+- [ ] D5-01 Define the student-facing interaction and safety copy: prototype disclaimer, source-grounded response framing, clear next-step language, and explicit human-support handoffs.
+- [ ] D5-02 Implement a deterministic query-to-guidance flow using existing retrieval, journey routing and escalation outputs; no LLM-generated answers, personal data, authentication, or external-system integration.
+- [ ] D5-03 Render retrieved NBCC sources with titles, links, provenance and short extractive/retrieval-grounded guidance; do not invent policy or eligibility advice.
+- [ ] D5-04 Surface escalation and human-contact guidance safely for sensitive, accommodation, urgent, unmatched and source-error conditions; never expose development diagnostics in the student experience.
+- [ ] D5-05 Add UI and integration tests, complete a build and production-gating check, and document Day 5 evidence and limitations in `learning-log/DAY_05.md`.
+
+## Day 6 — Demonstration Quality, Accessibility and Evidence (Planned)
+
+### Day 6 Epic – Demonstration Quality and Evidence
+
+**Epic description**  
+As NBCC and Lucentrix, we want the concept demonstrator to be easy to understand, accessible, stable and evidence-led in a client meeting. The objective is to demonstrate what the system does and does not do honestly—not to simulate a production service.
+
+**Epic acceptance criteria**
+
+- The student-facing experience passes a focused keyboard, semantic, contrast and small-screen review, with material issues fixed or documented.
+- A repeatable scenario set demonstrates all five journeys and the main escalation behaviours with public-source or policy evidence.
+- The demo has an audience-appropriate explanation of source provenance, deterministic logic, safety guardrails and known limitations.
+- Regression results are recorded truthfully before the demo.
+
+### Day 6 Backlog Items
+
+- [ ] D6-01 Perform a focused accessibility and responsive-use review of the student-facing flow; remedy material keyboard, semantic, contrast and small-screen issues within the existing stack.
+- [ ] D6-02 Curate a demo-ready scenario set spanning academic support, financial support, accessibility/accommodation, wellbeing/safety, urgent/unmatched and source-error behaviours; every scenario must map to public source evidence or a documented escalation policy trigger.
+- [ ] D6-03 Create a repeatable demo evidence view or runbook showing query, retrieved source(s), journey, escalation decision, target human service and limits of the prototype; keep developer inspection routes development-only.
+- [ ] D6-04 Complete a regression pass across golden questions, routing/escalation policy tests and student-facing integration tests; record results and any unresolved limitations truthfully.
+- [ ] D6-05 Document Day 6 learning, demo-readiness risks and exact pre-demo checks in `learning-log/DAY_06.md`.
+
+## Day 7 — Client Demo Readiness and Release Baseline (Planned)
+
+### Day 7 Epic – Controlled Client Demonstration Baseline
+
+**Epic description**  
+As NBCC and Lucentrix, we want a controlled, reviewable demonstration baseline that proves the concept is safe to show and reproducible. This is not a public production release and does not expand the product’s scope.
+
+**Epic acceptance criteria**
+
+- A final governance audit confirms the Charter, Scope and policies remain intact: public sources only; no personal data, LLM, authentication, SIMS/Brightspace, case management, analytics or public deployment.
+- A clean, repeatable test/build/production-smoke run is recorded and fully green.
+- A concise demo pack explains purpose, boundaries, scenarios, safety/escalation, evidence, known limitations and future options.
+- A reviewed, product-owner-approved baseline is merged to `main` and tagged or released only after final checks pass.
+
+### Day 7 Backlog Items
+
+- [ ] D7-01 Conduct a final scope and governance audit against `PRODUCT_CHARTER.md`, `SCOPE.md`, policies and `AI_OPERATING_INSTRUCTIONS.md`; confirm no personal data, LLM, authentication, SIMS/Brightspace integration, analytics or public deployment has entered scope.
+- [ ] D7-02 Run final clean-install/reproducibility, `npm test`, `npm run build` and production-mode smoke checks; confirm dev-only routes are 404-gated and public health behaviour remains correct.
+- [ ] D7-03 Prepare concise client-demo collateral: purpose, public-source boundaries, safety/escalation behaviour, scenario script, evidence of deterministic evaluation, known limitations and explicit next-step options.
+- [ ] D7-04 Create a demo baseline through a reviewed PR merged to `main` and a version tag or GitHub release only after all final checks are green and product-owner approval is recorded.
+- [ ] D7-05 Record final demo-readiness decision, evidence, open risks and post-demo follow-up candidates in `learning-log/DAY_07.md`.
+
+## Seven-Day Delivery Map
+
+- **Day 1:** Foundation, governance, source catalogue and app shell.
+- **Day 2:** Curated deterministic retrieval and golden-question evaluation.
+- **Day 3:** Deterministic journey routing and policy-driven escalation.
+- **Day 4:** Retrieval robustness; close D2-FU-01 and restore a green evaluation suite.
+- **Day 5:** Safe student-facing guided experience over the validated deterministic foundation.
+- **Day 6:** Accessibility, demo quality, scenarios and evidence.
+- **Day 7:** Final governance/testing gate, demo collateral and controlled baseline.
+
+All Day 5–Day 7 work remains subject to the existing product charter and scope boundaries. Any expansion beyond the listed items requires a documented scope amendment and product-owner approval.
