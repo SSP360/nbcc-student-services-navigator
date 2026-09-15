@@ -30,7 +30,11 @@
 - [x] D2-04 Add approximately 10 golden questions with expected source IDs. Evidence: `evals/golden_questions.json`.
 - [x] D2-05 Run and record repeatable evaluation results. Evidence: `tests/golden-questions.test.ts` (automated, repeatable via `npm test`), `evals/golden_questions_results.json` (committed snapshot with real scores).
 
-Status: all items implemented, tested, and built successfully on branch `feat/d2-01-curate-sources`. Full detail in `learning-log/DAY_02.md`. Not yet merged to main; awaiting explicit product-owner acceptance per the Day 2 delivery rule in GitHub Issue #2.
+Status: all items implemented, tested, and built successfully on branch `feat/d2-01-curate-sources`. Full detail in `learning-log/DAY_02.md`. Accepted by the product owner.
+
+## Day 3+ Candidate Increments (not started, not scoped)
+
+- [ ] D3-XX Improve retrieval robustness by stripping footer boilerplate / reweighting generic terms for sexual-violence support queries. **Known limitation observed in Day 2**: generic terms ("support", "campus") duplicated in near-identical footer/contact boilerplate across curated pages caused a top-1 near-miss on golden question **GQ-04** ("Is there support for sexual violence or assault on campus?", expected `NBCC-SS-005`) — the retrieval engine ranked `NBCC-SS-002` first by a narrow margin (score 45 vs. 44); `NBCC-SS-005` still placed second, within the top 3. Evidence: `evals/golden_questions_results.json` (GQ-04 entry, `ranked_results` scores), `learning-log/DAY_02.md` (analysis section). Candidate approaches for Day 3+: strip repeated footer/contact boilerplate before scoring, or reweight/deprioritize generic terms shared across most of the corpus. Not designed or scoped here; this item only records the observation for future prioritization.
 
 ## Explicitly deferred
 
