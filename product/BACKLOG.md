@@ -35,7 +35,7 @@ Status: all items implemented, tested, and built successfully on branch `feat/d2
 
 ## Day 2 — Follow-up Candidates (Not Started)
 
-- [ ] D2-FU-01 Improve retrieval robustness by stripping footer boilerplate and/or reweighting generic terms (e.g., "support", "campus") for sensitive queries such as sexual-violence support. **Known limitation observed in Day 2**: caused a top-1 near-miss on golden question GQ-04 (NBCC-SS-002 scored 45 vs. NBCC-SS-005's 44; NBCC-SS-005 still placed second, within top 3). Evidence: `evals/golden_questions_results.json` (GQ-04 entry), `learning-log/DAY_02.md`. **Day 3 update**: the same ranking issue now also surfaces as a journey-routing mislabel for GQ-04 (`lib/routing.ts` reports `academic_support` instead of `wellbeing_safety`, since journey routing uses the top-1 retrieval result). The escalation layer (`lib/escalation.ts`) compensates for this specific safety-critical case by routing crisis/safety disclosures to Wellness and Counselling directly, independent of journey — but other, non-crisis queries in an affected domain would not have that compensation. See `learning-log/DAY_03.md`. Still not started; explicitly excluded from Day 3.
+- [ ] D2-FU-01 **(Day 4 priority — see Day 3 acceptance note below)** Improve retrieval robustness by stripping footer boilerplate and/or reweighting generic terms (e.g., "support", "campus") for sensitive queries such as sexual-violence support. **Known limitation observed in Day 2**: caused a top-1 near-miss on golden question GQ-04 (NBCC-SS-002 scored 45 vs. NBCC-SS-005's 44; NBCC-SS-005 still placed second, within top 3). Evidence: `evals/golden_questions_results.json` (GQ-04 entry), `learning-log/DAY_02.md`. **Day 3 update**: the same ranking issue now also surfaces as a journey-routing mislabel for GQ-04 (`lib/routing.ts` reports `academic_support` instead of `wellbeing_safety`, since journey routing uses the top-1 retrieval result). The escalation layer (`lib/escalation.ts`) compensates for this specific safety-critical case by routing crisis/safety disclosures to Wellness and Counselling directly, independent of journey — but other, non-crisis queries in an affected domain would not have that compensation. See `learning-log/DAY_03.md`. **Acceptance criterion for closing this item**: `tests/routing-escalation-golden-questions.test.ts`'s GQ-04 journey assertion (`expected_journey: "wellbeing_safety"`) passes, and the aggregate journey-classification-accuracy metric in `evals/routing_escalation_results.json` reaches 10/10. Still not started; explicitly excluded from Day 3; designated the priority item for Day 4.
 
 ## Explicitly deferred
 
@@ -49,7 +49,7 @@ Status: all items implemented, tested, and built successfully on branch `feat/d2
 - Analytics dashboard
 - Public deployment
 
-## Day 3 — Policy-Driven Routing and Escalation (No Model) (Implemented; corrections applied after first review, pending final acceptance)
+## Day 3 — Policy-Driven Routing and Escalation (No Model) (Accepted)
 
 - [x] D3-01 Implement deterministic journey routing over retrieval results (academic_support, financial_support, accessibility_inclusion, wellbeing_safety, general_contact) with human-readable reasons. Evidence: `lib/routing.ts`, `tests/routing.test.ts`.
 - [x] D3-02 Implement policy-driven escalation decisions (escalate / do not escalate, target service, reason) based on **all 6** triggers in `policies/ESCALATION_POLICY.md`, including trigger 6 (Source Error). Evidence: `lib/escalation.ts`, `tests/escalation.test.ts`; Source Error verified end-to-end against the live server by deliberately corrupting a curated file, documented in `learning-log/DAY_03.md`.
@@ -61,4 +61,15 @@ Status: all items implemented, tested, and built successfully on branch `feat/d2
 
 During D3-02, a real safety-relevant bug was also found and fixed before commit: the `crisis_or_safety` escalation trigger initially resolved its target contact from the (retrieval-derived) journey, which could route a sexual-violence disclosure's escalation to the academic-coaching contact instead of Wellness and Counselling; fixed to always target NBCC-SS-005 for that trigger, independent of journey.
 
-`npm test`: 1 known, documented failure (GQ-04 journey — see above) + 146 passing, out of 147 total. `npm run build`: passes. Not yet merged to main or pushed to origin; awaiting explicit product-owner acceptance.
+`npm test`: 1 known, documented failure (GQ-04 journey — see above) + 146 passing, out of 147 total. `npm run build`: passes.
+
+**Day 3 Acceptance Note (product owner, 2026-09-16)**: Day 3 – Policy-Driven Routing and Escalation (No Model) is accepted functionally.
+
+- Deterministic journey routing and policy-driven escalation are implemented and tested over the existing Day 2 retrieval layer, with all six escalation triggers (including Source Error) covered.
+- Crisis and safety-related queries (including the sexual-violence golden question) are consistently escalated to Wellness and Counselling (NBCC-SS-005), independent of retrieval ranking or journey label.
+- One known defect remains: the GQ-04 sexual-violence query is currently classified into `academic_support` instead of the product-intended `wellbeing_safety` journey, due to the unresolved D2-FU-01 retrieval robustness limitation. This defect is deliberately preserved as a failing journey-classification test and recorded as a dependency on D2-FU-01, not hidden or downgraded.
+- Day 4 (or the next increment) will focus on D2-FU-01: improving retrieval robustness (e.g., footer stripping / generic-term reweighting) and bringing GQ-04's journey classification to green, so that retrieval, routing, escalation and analytics all reflect the same safety-correct story.
+
+**Decision**: Proceed with Day 3 as a completed functional increment with one documented, tracked defect linked to D2-FU-01. Day 4 backlog explicitly includes "Fix D2-FU-01 and correct GQ-04 journey to `wellbeing_safety`" as a priority item (see above).
+
+Branch `feat/day-03-routing` pushed to origin for independent review after this acceptance. Not merged to `main`; merge remains the product owner's decision.

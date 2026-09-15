@@ -438,3 +438,43 @@ Confirmed with live commands against a real running server, not assumed:
   `app/page.tsx`, `app/layout.tsx`, `knowledge/sources.yaml`,
   `knowledge/curated/*.json`, `evals/golden_questions_results.json`
   (Day 2 snapshot), `package.json`, `next.config.js`
+
+---
+
+## Day 3 Acceptance Note (Product Owner, 2026-09-16)
+
+> Day 3 – Policy-Driven Routing and Escalation (No Model) is accepted
+> functionally.
+>
+> - Deterministic journey routing and policy-driven escalation are
+>   implemented and tested over the existing Day 2 retrieval layer, with
+>   all six escalation triggers (including Source Error) covered.
+> - Crisis and safety-related queries (including the sexual-violence
+>   golden question) are consistently escalated to Wellness and
+>   Counselling (NBCC-SS-005), independent of retrieval ranking or journey
+>   label.
+> - One known defect remains: the GQ-04 sexual-violence query is currently
+>   classified into `academic_support` instead of the product-intended
+>   `wellbeing_safety` journey, due to the unresolved D2-FU-01 retrieval
+>   robustness limitation. This defect is deliberately preserved as a
+>   failing journey-classification test and recorded as a dependency on
+>   D2-FU-01, not hidden or downgraded.
+> - Day 4 (or the next increment) will focus on D2-FU-01: improving
+>   retrieval robustness (e.g., footer stripping / generic-term
+>   reweighting) and bringing GQ-04's journey classification to green, so
+>   that retrieval, routing, escalation and analytics all reflect the same
+>   safety-correct story.
+>
+> **Decision**: Proceed with Day 3 as a completed functional increment
+> with one documented, tracked defect linked to D2-FU-01. Day 4 backlog
+> will explicitly include "Fix D2-FU-01 and correct GQ-04 journey to
+> `wellbeing_safety`" as a priority item.
+
+**Acceptance criterion recorded for closing D2-FU-01** (added to
+`product/BACKLOG.md`): `tests/routing-escalation-golden-questions.test.ts`'s
+GQ-04 journey assertion passes, and journey-classification accuracy in
+`evals/routing_escalation_results.json` reaches 10/10.
+
+Branch `feat/day-03-routing` pushed to `origin` after this acceptance for
+independent review. Not merged to `main` — merge remains the product
+owner's decision.
