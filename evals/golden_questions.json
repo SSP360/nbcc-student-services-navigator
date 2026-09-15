@@ -1,66 +1,87 @@
 {
-  "description": "Golden questions for Day 2 deterministic keyword retrieval evaluation. Each question is a realistic student query grounded in terms actually present in the curated corpus (knowledge/curated/). expected_source_ids lists the source(s) the retrieval should surface.",
+  "description": "Golden questions for retrieval, routing, and escalation evaluation. Each question is a realistic student query grounded in terms actually present in the curated corpus (knowledge/curated/). expected_source_ids lists the source(s) the retrieval should surface (Day 2). expected_journey and expected_escalation were added in Day 3 to evaluate deterministic journey routing and policy-driven escalation over the same questions; no existing field was changed.",
   "corpus_size": 3,
   "questions": [
     {
       "id": "GQ-01",
       "question": "Who do I contact for wellness and counselling support?",
       "expected_source_ids": ["NBCC-SS-005"],
-      "grounding": "Source title is 'Wellness and Counselling'; page lists named counsellors and contact emails."
+      "grounding": "Source title is 'Wellness and Counselling'; page lists named counsellors and contact emails.",
+      "expected_journey": "wellbeing_safety",
+      "expected_escalation": false
     },
     {
       "id": "GQ-02",
       "question": "I'm feeling anxious, what resources does NBCC have?",
       "expected_source_ids": ["NBCC-SS-005"],
-      "grounding": "'Anxiety' is explicitly listed under 'We Can help you with' on the wellness page."
+      "grounding": "'Anxiety' is explicitly listed under 'We Can help you with' on the wellness page.",
+      "expected_journey": "wellbeing_safety",
+      "expected_escalation": false
     },
     {
       "id": "GQ-03",
       "question": "What is myWellness and how do I get 24/7 mental health support?",
       "expected_source_ids": ["NBCC-SS-005"],
-      "grounding": "'myWellness' and '24/7 Virtual Support' are named on the wellness page."
+      "grounding": "'myWellness' and '24/7 Virtual Support' are named on the wellness page.",
+      "expected_journey": "wellbeing_safety",
+      "expected_escalation": false
     },
     {
       "id": "GQ-04",
       "question": "Is there support for sexual violence or assault on campus?",
       "expected_source_ids": ["NBCC-SS-005"],
-      "grounding": "Page names the Campus Sexual Assault Support Advocate (CSASA) and sexual violence resources."
+      "grounding": "Page names the Campus Sexual Assault Support Advocate (CSASA) and sexual violence resources.",
+      "expected_journey": "academic_support",
+      "expected_escalation": true,
+      "escalation_note": "Journey routing uses the top-1 retrieval result, which for this question is NBCC-SS-002 (academic_support) due to the known D2-FU-01 footer-boilerplate near-miss (score 45 vs. 44; NBCC-SS-005 still ranks #2). expected_journey reflects that actual, currently-correct behavior rather than the intended domain, so this test does not silently mask the limitation. The escalation layer is independent of retrieval ranking: it matches 'assault'/'violence' directly against ESCALATION_POLICY.md trigger 1 (Sensitive Personal Information) and escalates regardless of which source ranked first. This is the safety property that matters most for this question, and is why D2-FU-01 remains a backlog item rather than a blocker: the current system does not silently answer a safety-sensitive question with the wrong journey's informational content — it escalates to human support either way."
     },
     {
       "id": "GQ-05",
       "question": "How can a Student Success Coach help me transition to college life?",
       "expected_source_ids": ["NBCC-SS-002"],
-      "grounding": "'Ease Your Transition' is a named section on the Student Success Coaching page."
+      "grounding": "'Ease Your Transition' is a named section on the Student Success Coaching page.",
+      "expected_journey": "academic_support",
+      "expected_escalation": false
     },
     {
       "id": "GQ-06",
       "question": "What is the Nitap Peer Mentor Program?",
       "expected_source_ids": ["NBCC-SS-002"],
-      "grounding": "'Nitap (Peer) Mentor Program' is explicitly named on the Student Success Coaching page."
+      "grounding": "'Nitap (Peer) Mentor Program' is explicitly named on the Student Success Coaching page.",
+      "expected_journey": "academic_support",
+      "expected_escalation": false
     },
     {
       "id": "GQ-07",
       "question": "Are there recordings of orientation sessions for new students?",
       "expected_source_ids": ["NBCC-SS-002"],
-      "grounding": "'Orientation for New Students (Recordings)' is a named section on the Student Success Coaching page."
+      "grounding": "'Orientation for New Students (Recordings)' is a named section on the Student Success Coaching page.",
+      "expected_journey": "academic_support",
+      "expected_escalation": false
     },
     {
       "id": "GQ-08",
       "question": "What is NBCC's Early Alert and PASS program?",
       "expected_source_ids": ["NBCC-SS-001"],
-      "grounding": "'Early Alert Program & PASS' is explicitly named on the general Student Services page."
+      "grounding": "'Early Alert Program & PASS' is explicitly named on the general Student Services page.",
+      "expected_journey": "general_contact",
+      "expected_escalation": false
     },
     {
       "id": "GQ-09",
       "question": "What programs and services are available to NBCC students overall?",
       "expected_source_ids": ["NBCC-SS-001"],
-      "grounding": "General overview page introducing the range of Student Services."
+      "grounding": "General overview page introducing the range of Student Services.",
+      "expected_journey": "general_contact",
+      "expected_escalation": false
     },
     {
       "id": "GQ-10",
       "question": "What is the NBCC Student Learning Experience Charter?",
       "expected_source_ids": ["NBCC-SS-001"],
-      "grounding": "'NBCC Student Learning Experience Charter' is explicitly named on the general Student Services page."
+      "grounding": "'NBCC Student Learning Experience Charter' is explicitly named on the general Student Services page.",
+      "expected_journey": "general_contact",
+      "expected_escalation": false
     }
   ]
 }
