@@ -73,3 +73,29 @@ During D3-02, a real safety-relevant bug was also found and fixed before commit:
 **Decision**: Proceed with Day 3 as a completed functional increment with one documented, tracked defect linked to D2-FU-01. Day 4 backlog explicitly includes "Fix D2-FU-01 and correct GQ-04 journey to `wellbeing_safety`" as a priority item (see above).
 
 Branch `feat/day-03-routing` pushed to origin for independent review after this acceptance. Not merged to `main`; merge remains the product owner's decision.
+
+## Day 4 — Retrieval Robustness and Journey Correction (Planned)
+
+### Day 4 Epic – Fix D2-FU-01 and Bring GQ-04 Journey to Green
+
+**Epic title**  
+Day 4 – Retrieval Robustness and Safety-Correct Journeys (No Model)
+
+**Epic description**  
+As NBCC and Lucentrix, we want the Student Services Navigator to fix the known retrieval robustness limitation (D2-FU-01) so that sensitive queries like GQ-04 are retrieved and classified into the correct wellbeing/safety journey, without changing our no-model, deterministic architecture. This ensures that retrieval, journey routing, escalation, and any future analytics all tell the same safety-correct story.
+
+**Epic acceptance criteria**
+
+- GQ-04's retrieval results reliably surface NBCC-SS-005 (Wellness and Counselling) as the top-1 match (or equivalent clear signal), without relying on brittle footer boilerplate or overly generic terms.
+- `tests/routing-escalation-golden-questions.test.ts`'s GQ-04 journey assertion passes with `expected_journey: "wellbeing_safety"`.
+- The aggregate journey-classification accuracy metric in `evals/routing_escalation_results.json` is updated to 10/10, with the GQ-04 defect note removed.
+- No new safety regressions are introduced for other golden questions (all Day 2 and Day 3 tests remain green).
+- No language model, embeddings, or external student systems are added; this remains a deterministic retrieval-logic improvement.
+
+### Day 4 Backlog Items
+
+- [ ] D4-01 Analyse D2-FU-01 retrieval behaviour and footer boilerplate impact in detail (GQ-04 and at least 2–3 similar queries), and document a concrete retrieval-logic strategy (e.g., footer stripping, generic-term deweighting, or field-aware matching) in `learning-log/DAY_04.md`.
+- [ ] D4-02 Implement retrieval robustness improvements in `lib/retrieval.ts` (and/or supporting helpers) to reduce footer boilerplate noise and make GQ-04 and similar queries match NBCC-SS-005 as their primary, wellbeing/safety source, without breaking existing Day 2 success cases.
+- [ ] D4-03 Re-run retrieval, routing, and escalation evaluations (`tests/golden-questions.test.ts`, `tests/routing-escalation-golden-questions.test.ts`) and update `evals/golden_questions_results.json` and `evals/routing_escalation_results.json` to reflect the new, fully-green state (10/10 journey, 10/10 escalation-trigger, 1/1 escalation-target for GQ-04).
+- [ ] D4-04 Update `learning-log/DAY_04.md` and `product/BACKLOG.md` to record the retrieval changes, evidence, and any residual limitations, and to mark D2-FU-01 as closed once GQ-04's journey test passes and journey accuracy reaches 10/10.
+- [ ] D4-05 Run full `npm test` and `npm run build` as the Day 4 acceptance gate, confirming that all suites are green (no deliberate failing tests remain) and that production-mode dev routes remain correctly 404-gated.
