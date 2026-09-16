@@ -140,3 +140,87 @@ from a new branch until:
 This section will be updated with that SHA and those results once the PR merges — it is
 intentionally left open here, not pre-filled, since the whole point of this reconciliation
 is to stop treating "PR opened" as equivalent to "done."
+
+---
+
+## Post-Merge Reconciliation Verification (2026-09-16)
+
+**PR #5 ("Day 0: Repository reconciliation and delivery hygiene") is merged.**
+Verified directly, not assumed: `gh`/`git` show the merge commit on `main`, and
+`git fetch origin && git switch main && git pull --ff-only origin main` fast-forwarded
+cleanly from `036d2fe` to the current `main` SHA below.
+
+- **Current `main` commit SHA**: `be85fa7b934b037d77ae83737e7136bd9b95c7b4`
+  ("Merge pull request #5 from SSP360/chore/reconcile-day3-and-strategy")
+- **PR #5 status**: merged into `main`.
+
+### Files and content verified present on `main`
+
+- `product/REPOSITORY_DELIVERY_PROTOCOL.md` — present.
+- `product/RECONCILIATION_CHECKLIST.md` — present.
+- `learning-log/DAY_00.md` — present (this file).
+- `product/BACKLOG.md` contains a "Day 0" section, the string
+  "Merged / accepted on main" (Day 3's corrected status), and multiple "Day 4" references
+  including its `Blocked` status.
+
+### Fresh-`main` validation (clean install, not carried over from any branch)
+
+```bash
+rm -rf node_modules .next
+npm ci
+npm test
+npm run build
+```
+
+**`npm test`** (exact result):
+```
+Test Suites: 1 failed, 9 passed, 10 total
+Tests:       1 failed, 146 passed, 147 total
+```
+
+**`npm run build`** (exact result): compiled successfully; TypeScript check passed; 10
+routes generated (`/`, `/_not-found`, `/api/dev/retrieval`, `/api/dev/routing`,
+`/api/dev/sources`, `/api/health`, `/api/source/[id]`, `/dev/retrieval`, `/dev/routing`,
+`/dev/sources`).
+
+### Production-mode gating, run from `main`
+
+```
+GET /api/dev/sources    -> 404
+GET /api/dev/retrieval  -> 404
+GET /api/dev/routing    -> 404
+GET /api/health         -> 200 {"status":"ok","service":"nbcc-student-services-navigator","version":"0.1.0","timestamp":"2026-09-16T08:36:12.881Z"}
+```
+
+### GQ-04 — confirmed as the one known, documented defect (unchanged, not concealed)
+
+Ran directly: `npx jest tests/routing-escalation-golden-questions.test.ts -t "GQ-04"`.
+
+```
+Expected: "wellbeing_safety"
+Received: "academic_support"
+```
+
+This is the sole failing assertion in the entire suite (1 of 147 tests). GQ-04's
+escalation-trigger (`crisis_or_safety`) and escalation-target (`NBCC-SS-005`, Wellness and
+Counselling) both pass correctly — confirmed in the same run — so the safety behavior is
+unaffected by the journey-classification defect. No product code, golden question,
+test, evaluation expectation, source, policy, package file, or configuration file was
+modified during this verification.
+
+### Day 0 final status
+
+**Day 0 is now "Merged / accepted on main."** All four completion criteria in
+`product/RECONCILIATION_CHECKLIST.md` are satisfied:
+1. The pull request (#5) is merged.
+2. `merged:true` is confirmed.
+3. The resulting `main` SHA (`be85fa7`) is recorded here and in `product/BACKLOG.md`.
+4. Post-merge checks have been run from that SHA and results recorded above.
+
+### Day 4 status
+
+**Day 4 is unblocked** (its blocking condition — this Day 0 PR merging plus post-merge
+validation — is now satisfied) **but has not been started.** No branch has been created
+for it and no implementation work has occurred. Per
+`product/REPOSITORY_DELIVERY_PROTOCOL.md`'s branch rule, Day 4 must branch from this
+verified `main` SHA (`be85fa7`) when it begins, not from any earlier branch.
