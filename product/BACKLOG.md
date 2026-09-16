@@ -49,7 +49,34 @@ Status: all items implemented, tested, and built successfully on branch `feat/d2
 - Analytics dashboard
 - Public deployment
 
-## Day 3 — Policy-Driven Routing and Escalation (No Model) (Accepted)
+## Day 0 — Repository Reconciliation and Delivery Hygiene (In progress)
+
+**Why this exists**: verified inspection (`git log`, `gh pr view 4`, direct `git diff`
+against `main`) found that Day 3's product-owner acceptance and its actual integration
+into `main` were, for a period, two different facts. Pull Request #4 has since merged
+(`merged:true`, resulting `main` SHA `036d2fe`), confirmed by direct inspection — but two
+further commits adding Day 4 and Days 5–7 backlog content were pushed to the
+already-merged `feat/day-03-routing` branch afterward and never reached `main`. Full
+detail: `product/REPOSITORY_DELIVERY_PROTOCOL.md` and `product/RECONCILIATION_CHECKLIST.md`.
+
+- [x] D0-01 Reconcile the accepted Day 3 implementation into `main`. **Acceptance criteria,
+      each verified independently, not assumed**:
+      - PR #4 (`feat/day-03-routing` → `main`) reports `merged:true` — **confirmed**.
+      - Resulting `main` SHA is recorded — **`036d2fed5b94e5c5fb08f50284478a5716fff0ba`**.
+      - `npm test` and `npm run build` run *from that `main` SHA* (not the branch) —
+        **confirmed**: 1 failed / 146 passed / 147 total; build passes; production-mode
+        gating confirms `/api/dev/sources`, `/api/dev/retrieval`, `/api/dev/routing` all
+        return 404 and `/api/health` returns 200.
+      - The GQ-04 defect is recorded honestly, not concealed — **confirmed**, see below.
+      - Backlog and roadmap content that had drifted onto the (already-merged) feature
+        branch is brought onto `main` via this Day 0 reconciliation pull request.
+- [ ] D0-02 Adopt `product/REPOSITORY_DELIVERY_PROTOCOL.md` and
+      `product/RECONCILIATION_CHECKLIST.md` as the standing process for every future
+      increment. Closed only once this Day 0 pull request itself is merged and its
+      post-merge (Reconcile-step) checks have been run from the resulting `main` SHA, per
+      the protocol's own rule.
+
+## Day 3 — Policy-Driven Routing and Escalation (No Model) (Merged / accepted on main)
 
 - [x] D3-01 Implement deterministic journey routing over retrieval results (academic_support, financial_support, accessibility_inclusion, wellbeing_safety, general_contact) with human-readable reasons. Evidence: `lib/routing.ts`, `tests/routing.test.ts`.
 - [x] D3-02 Implement policy-driven escalation decisions (escalate / do not escalate, target service, reason) based on **all 6** triggers in `policies/ESCALATION_POLICY.md`, including trigger 6 (Source Error). Evidence: `lib/escalation.ts`, `tests/escalation.test.ts`; Source Error verified end-to-end against the live server by deliberately corrupting a curated file, documented in `learning-log/DAY_03.md`.
@@ -72,9 +99,30 @@ During D3-02, a real safety-relevant bug was also found and fixed before commit:
 
 **Decision**: Proceed with Day 3 as a completed functional increment with one documented, tracked defect linked to D2-FU-01. Day 4 backlog explicitly includes "Fix D2-FU-01 and correct GQ-04 journey to `wellbeing_safety`" as a priority item (see above).
 
-Branch `feat/day-03-routing` pushed to origin for independent review after this acceptance. Not merged to `main`; merge remains the product owner's decision.
+**Integration status (corrected during Day 0 reconciliation)**: Pull Request #4
+(`feat/day-03-routing` → `main`) was subsequently opened, reviewed, and merged.
+`gh pr view 4` confirms `merged:true`; `main` at SHA `036d2fed5b94e5c5fb08f50284478a5716fff0ba`
+contains this Day 3 work, verified by direct file inspection and by running `npm test` /
+`npm run build` from that SHA (see Day 0 above). Per
+`product/REPOSITORY_DELIVERY_PROTOCOL.md`'s approved status vocabulary, this item's status
+is **"Merged / accepted on main,"** not "pending merge" — that earlier status is now stale
+and is corrected here rather than left standing.
 
-## Day 4 — Retrieval Robustness and Journey Correction (Planned)
+## Day 4 — Retrieval Robustness and Journey Correction (Blocked — blocked by Day 0 completion)
+
+**Blocked by**: `product/REPOSITORY_DELIVERY_PROTOCOL.md`'s rule that no new implementation
+branch starts until the Day 0 reconciliation pull request is merged into `main` and its
+post-merge checks have been run from the resulting `main` SHA. Day 4 must branch from that
+post-Day-0 `main`, not from any pre-Day-0 branch, to avoid repeating the branch-drift
+finding this reconciliation exists to fix.
+
+**Narrow scope, restated as the closing definition of done for D2-FU-01**: this item is
+strictly a retrieval-quality fix. Its definition of done is `tests/routing-escalation-golden-questions.test.ts`'s
+GQ-04 journey assertion passing with `expected_journey: "wellbeing_safety"`, and journey
+classification accuracy in `evals/routing_escalation_results.json` reaching 10/10 —
+**without changing any other expected evaluation result** (`expected_source_ids`,
+`expected_escalation`, `expected_escalation_target_id`, or any other golden question's
+expectation). No model, embedding, or scope expansion is introduced to achieve this.
 
 ### Day 4 Epic – Fix D2-FU-01 and Bring GQ-04 Journey to Green
 
@@ -100,72 +148,161 @@ As NBCC and Lucentrix, we want the Student Services Navigator to fix the known r
 - [ ] D4-04 Update `learning-log/DAY_04.md` and `product/BACKLOG.md` to record the retrieval changes, evidence, and any residual limitations, and to mark D2-FU-01 as closed once GQ-04's journey test passes and journey accuracy reaches 10/10.
 - [ ] D4-05 Run full `npm test` and `npm run build` as the Day 4 acceptance gate, confirming that all suites are green (no deliberate failing tests remain) and that production-mode dev routes remain correctly 404-gated.
 
-## Day 5 — Student-Facing Guided Experience (Planned)
+## Day 5 — Service-Resolution Proof and Privacy-Safe Measurement Design (Planned)
 
-### Day 5 Epic – Safe Deterministic Student Guidance
+### Day 5 Epic – Prove Service Resolution, Design Measurement Without Real Student Data
 
 **Epic description**  
-As NBCC and Lucentrix, we want a student-facing guided experience built on the validated deterministic retrieval, routing and escalation foundation. It must remain clearly labelled as a concept demonstrator, use public information only, cite its sources, provide clear next steps, and hand sensitive or uncertain cases to humans rather than making advice or eligibility decisions.
+As NBCC and Lucentrix, we want evidence that a query genuinely resolves to the correct
+human service end-to-end (retrieval → journey → escalation → named contact), and a design
+for *measuring* that resolution over time — without ever collecting or requiring real
+student data to do so. Measurement design, not measurement execution against real users,
+is this day's deliverable.
 
 **Epic acceptance criteria**
 
-- A student can enter a question and receive source-grounded information, a clear next step and relevant human contact guidance.
-- The student-facing response is derived only from existing public curated content plus deterministic retrieval/routing/escalation output; no LLM-generated answer is introduced.
-- Sensitive, accommodation, personalized-decision, urgent, unmatched and source-error conditions present a safe human-escalation path rather than unsupported advice.
-- Source title, link and provenance remain visible; the prototype disclaimer remains prominent.
-- The existing `/dev/*` inspector routes remain unavailable in production and are not exposed as student UI.
+- A defined, reproducible method demonstrates, for each of the five journeys, that a
+  representative query resolves to a named, correct human contact with full traceability
+  (source → journey → escalation decision → contact).
+- A privacy-safe measurement design exists (e.g., synthetic or anonymized query sets,
+  aggregate-only metrics) that could, in principle, monitor resolution quality over time
+  without collecting real student identities, free-text disclosures, or any personal data.
+- The measurement design explicitly states what it does *not* do: no logging of real
+  student queries, no persistent per-user tracking, no analytics against individuals.
+- All five journeys are covered by the resolution proof, including the GQ-04 case (subject
+  to Day 4's fix landing first).
 
 ### Day 5 Backlog Items
 
-- [ ] D5-01 Define the student-facing interaction and safety copy: prototype disclaimer, source-grounded response framing, clear next-step language, and explicit human-support handoffs.
-- [ ] D5-02 Implement a deterministic query-to-guidance flow using existing retrieval, journey routing and escalation outputs; no LLM-generated answers, personal data, authentication, or external-system integration.
-- [ ] D5-03 Render retrieved NBCC sources with titles, links, provenance and short extractive/retrieval-grounded guidance; do not invent policy or eligibility advice.
-- [ ] D5-04 Surface escalation and human-contact guidance safely for sensitive, accommodation, urgent, unmatched and source-error conditions; never expose development diagnostics in the student experience.
-- [ ] D5-05 Add UI and integration tests, complete a build and production-gating check, and document Day 5 evidence and limitations in `learning-log/DAY_05.md`.
+- [ ] D5-01 Define and document a "service-resolution proof" method: for each journey, a
+      representative query, its full retrieval → journey → escalation trace, and the
+      resulting named human contact, evidenced from the deterministic pipeline (no
+      fabricated examples).
+- [ ] D5-02 Design (not implement against real users) a privacy-safe measurement approach:
+      what would be measured, using what synthetic or aggregate data, with an explicit
+      statement of what is out of bounds (real student identities, free-text content
+      retention, individual-level tracking).
+- [ ] D5-03 Document how the existing `/dev/*` inspectors already provide the underlying
+      evidence this measurement design would aggregate, without requiring new
+      infrastructure to be built prematurely.
+- [ ] D5-04 Record Day 5 evidence, the measurement design, and open questions in
+      `learning-log/DAY_05.md`.
 
-## Day 6 — Demonstration Quality, Accessibility and Evidence (Planned)
+## Day 6 — Dual Learner/Staff Handoff Demonstration (Planned)
 
-### Day 6 Epic – Demonstration Quality and Evidence
+### Day 6 Epic – Demonstrate the Handoff From Both Sides
 
 **Epic description**  
-As NBCC and Lucentrix, we want the concept demonstrator to be easy to understand, accessible, stable and evidence-led in a client meeting. The objective is to demonstrate what the system does and does not do honestly—not to simulate a production service.
+As NBCC and Lucentrix, we want to demonstrate the same escalation event from both
+perspectives: what a learner experiences when a query is escalated, and what a staff
+member would need to receive to act on that handoff. This proves the handoff is coherent
+and complete without building a staff-facing product surface prematurely.
 
 **Epic acceptance criteria**
 
-- The student-facing experience passes a focused keyboard, semantic, contrast and small-screen review, with material issues fixed or documented.
-- A repeatable scenario set demonstrates all five journeys and the main escalation behaviours with public-source or policy evidence.
-- The demo has an audience-appropriate explanation of source provenance, deterministic logic, safety guardrails and known limitations.
-- Regression results are recorded truthfully before the demo.
+- A demonstrable walkthrough shows a learner's query reaching an escalation decision and
+  the resulting human-contact information they would see.
+- A parallel walkthrough shows what a staff member at the named contact service would need
+  to know to act on that same escalation (query context, trigger, journey, timestamp) —
+  documented, not necessarily a built staff UI.
+- The two walkthroughs are shown side by side so the handoff can be reviewed for
+  completeness and safety by a non-technical stakeholder.
+- No new personal data, authentication, or staff-facing product surface is built unless
+  and until explicitly scoped as its own increment.
 
 ### Day 6 Backlog Items
 
-- [ ] D6-01 Perform a focused accessibility and responsive-use review of the student-facing flow; remedy material keyboard, semantic, contrast and small-screen issues within the existing stack.
-- [ ] D6-02 Curate a demo-ready scenario set spanning academic support, financial support, accessibility/accommodation, wellbeing/safety, urgent/unmatched and source-error behaviours; every scenario must map to public source evidence or a documented escalation policy trigger.
-- [ ] D6-03 Create a repeatable demo evidence view or runbook showing query, retrieved source(s), journey, escalation decision, target human service and limits of the prototype; keep developer inspection routes development-only.
-- [ ] D6-04 Complete a regression pass across golden questions, routing/escalation policy tests and student-facing integration tests; record results and any unresolved limitations truthfully.
-- [ ] D6-05 Document Day 6 learning, demo-readiness risks and exact pre-demo checks in `learning-log/DAY_06.md`.
+- [ ] D6-01 Script and document a learner-side walkthrough for at least one query per
+      journey, using the existing deterministic pipeline and dev inspectors as evidence.
+- [ ] D6-02 Document the corresponding staff-side handoff view: what information the named
+      contact service would need, derived only from the escalation decision's existing
+      fields (trigger, journey, target service, reason) — no new data collection.
+- [ ] D6-03 Produce a combined learner/staff demonstration script or view suitable for a
+      non-technical audience, clearly labeled as a demonstration, not a live handoff
+      integration.
+- [ ] D6-04 Record Day 6 evidence, the dual-perspective walkthroughs, and limitations in
+      `learning-log/DAY_06.md`.
 
-## Day 7 — Client Demo Readiness and Release Baseline (Planned)
+## Day 7 — Design-Partner Readiness (Planned)
 
-### Day 7 Epic – Controlled Client Demonstration Baseline
+### Day 7 Epic – Ready for a Design-Partner Conversation
 
 **Epic description**  
-As NBCC and Lucentrix, we want a controlled, reviewable demonstration baseline that proves the concept is safe to show and reproducible. This is not a public production release and does not expand the product’s scope.
+As NBCC and Lucentrix, we want the concept demonstrator, its evidence, and its governance
+documentation to be ready for a design-partner conversation — a candid discussion with a
+prospective institutional partner about what has been proven, what has not, and what a
+pilot would require. This is not a production release and does not expand product scope.
 
 **Epic acceptance criteria**
 
-- A final governance audit confirms the Charter, Scope and policies remain intact: public sources only; no personal data, LLM, authentication, SIMS/Brightspace, case management, analytics or public deployment.
-- A clean, repeatable test/build/production-smoke run is recorded and fully green.
-- A concise demo pack explains purpose, boundaries, scenarios, safety/escalation, evidence, known limitations and future options.
-- A reviewed, product-owner-approved baseline is merged to `main` and tagged or released only after final checks pass.
+- A final governance audit confirms the Charter, Scope and policies remain intact: public
+  sources only; no personal data, LLM, authentication, SIMS/Brightspace, case management,
+  analytics, or public deployment.
+- A clean, repeatable test/build/production-smoke run is recorded and fully green,
+  including Day 4's GQ-04 fix.
+- A concise design-partner-readiness pack explains purpose, boundaries, the
+  service-resolution proof (Day 5), the learner/staff handoff demonstration (Day 6),
+  evidence, known limitations, and explicit next-step options — framed as a conversation
+  starter, not a sales claim.
+- A reviewed, product-owner-approved baseline is merged to `main` and tagged only after
+  final checks pass.
 
 ### Day 7 Backlog Items
 
-- [ ] D7-01 Conduct a final scope and governance audit against `PRODUCT_CHARTER.md`, `SCOPE.md`, policies and `AI_OPERATING_INSTRUCTIONS.md`; confirm no personal data, LLM, authentication, SIMS/Brightspace integration, analytics or public deployment has entered scope.
-- [ ] D7-02 Run final clean-install/reproducibility, `npm test`, `npm run build` and production-mode smoke checks; confirm dev-only routes are 404-gated and public health behaviour remains correct.
-- [ ] D7-03 Prepare concise client-demo collateral: purpose, public-source boundaries, safety/escalation behaviour, scenario script, evidence of deterministic evaluation, known limitations and explicit next-step options.
-- [ ] D7-04 Create a demo baseline through a reviewed PR merged to `main` and a version tag or GitHub release only after all final checks are green and product-owner approval is recorded.
-- [ ] D7-05 Record final demo-readiness decision, evidence, open risks and post-demo follow-up candidates in `learning-log/DAY_07.md`.
+- [ ] D7-01 Conduct a final scope and governance audit against `PRODUCT_CHARTER.md`,
+      `SCOPE.md`, policies, and `AI_OPERATING_INSTRUCTIONS.md`.
+- [ ] D7-02 Run final clean-install/reproducibility, `npm test`, `npm run build`, and
+      production-mode smoke checks; confirm dev-only routes remain 404-gated.
+- [ ] D7-03 Prepare a concise design-partner-readiness pack: purpose, boundaries, the Day 5
+      resolution proof, the Day 6 handoff demonstration, evidence, known limitations, and
+      next-step options.
+- [ ] D7-04 Create a reviewed baseline through a PR merged to `main` and a version tag,
+      only after all final checks are green and product-owner approval is recorded.
+- [ ] D7-05 Record the final design-partner-readiness decision, evidence, open risks, and
+      post-demo follow-up candidates in `learning-log/DAY_07.md`.
+
+## Post-Demo Discovery — Not Product Scope Until Validated
+
+The following are discovery and validation activities, not backlog items with code
+deliverables. None of them authorizes any product or engineering work by themselves; each
+would need its own explicitly scoped backlog item, created only after the activity below
+produces a validated reason to do so.
+
+- **Discovery interviews**: structured conversations with NBCC stakeholders (and, if
+  appropriate, comparable institutions) to test whether the demonstrated journeys and
+  escalation behaviour match real staff and student workflows.
+- **Competitive / procurement scan**: understanding how comparable institutions currently
+  handle student-services navigation and what a procurement process for something like
+  this would actually require.
+- **Pilot charter**: if discovery supports it, a written charter defining a bounded pilot's
+  scope, duration, success criteria, and — critically — what stays out of scope (real
+  student data, live integrations) for the pilot's duration.
+- **Value-model validation**: testing, with real stakeholders, whether the assumed value
+  (faster resolution, reduced staff load, improved consistency) is actually the value they
+  care about, before building anything to prove it quantitatively.
+- **Go/no-go decision**: an explicit, documented decision point — informed by the above —
+  on whether to proceed to a pilot at all. "No" is a legitimate and complete outcome of
+  this section.
+
+## Deferred Horizon (Beyond Design-Partner Readiness — Not Scoped, Not Approved)
+
+These remain explicitly out of scope for every day of this roadmap, including Days 5–7 and
+any post-demo discovery. Moving any of them into scope requires a documented
+`PRODUCT_CHARTER.md` amendment and explicit product-owner approval — never an incremental
+drift into scope through an unrelated increment.
+
+- Real student data of any kind.
+- Any external system *write* (SIMS, Brightspace, Microsoft, or otherwise) — read-only
+  integration, if ever considered, is a separate, later decision.
+- Autonomous high-stakes decisions (academic, financial, health, accessibility, or
+  disciplinary outcomes made without a human).
+- A broad employee copilot spanning tasks beyond student-services navigation.
+- A generic, undifferentiated LLM chatbot — this project's value is the deterministic,
+  evidence-linked pipeline, not a conversational interface.
+- Institution-wide AI claims or branding implying broader validation than this
+  demonstrator has actually undergone.
+- Unsupported P&L, cost-savings, or retention claims — no financial or retention outcome
+  may be asserted without a validated, cited measurement basis.
 
 ## Seven-Day Delivery Map
 
@@ -173,8 +310,8 @@ As NBCC and Lucentrix, we want a controlled, reviewable demonstration baseline t
 - **Day 2:** Curated deterministic retrieval and golden-question evaluation.
 - **Day 3:** Deterministic journey routing and policy-driven escalation.
 - **Day 4:** Retrieval robustness; close D2-FU-01 and restore a green evaluation suite.
-- **Day 5:** Safe student-facing guided experience over the validated deterministic foundation.
-- **Day 6:** Accessibility, demo quality, scenarios and evidence.
-- **Day 7:** Final governance/testing gate, demo collateral and controlled baseline.
+- **Day 5:** Service-resolution proof and privacy-safe measurement design.
+- **Day 6:** Dual learner/staff handoff demonstration.
+- **Day 7:** Design-partner readiness.
 
-All Day 5–Day 7 work remains subject to the existing product charter and scope boundaries. Any expansion beyond the listed items requires a documented scope amendment and product-owner approval.
+All Day 5–Day 7 work remains subject to the existing product charter and scope boundaries. Any expansion beyond the listed items — including anything in Post-Demo Discovery or the Deferred Horizon above — requires a documented scope amendment and product-owner approval.
