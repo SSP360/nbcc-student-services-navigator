@@ -171,118 +171,53 @@ As NBCC and Lucentrix, we want the Student Services Navigator to fix the known r
 - [x] D4-04 Updated `learning-log/DAY_04.md` and `product/BACKLOG.md`; D2-FU-01 marked closed above.
 - [x] D4-05 Ran full `npm test` (152/152 passing, no deliberately failing test remains) and `npm run build` (passed, 10 routes) as the Day 4 acceptance gate; confirmed production-mode dev routes (`/api/dev/sources`, `/api/dev/retrieval`, `/api/dev/routing`) remain 404-gated and `/api/health` returns 200.
 
-## Day 5 — Service-Resolution Proof and Privacy-Safe Measurement Design (Planned)
+## Days 5–7 — Service Resolution and Design-Partner Readiness (Complete — implemented on branch, pending merge)
 
-### Day 5 Epic – Prove Service Resolution, Design Measurement Without Real Student Data
+Executed as **one combined increment** (not three sequential days), per direct
+product-owner instruction, on branch `feat/d5-d7-service-resolution-readiness`, base
+`main` @ `3c7f3e5d5bdf517411a64f4988ccde884fe06b3b`. Full detail, evidence, and validation
+results: `learning-log/DAY_05_07.md`. Per `product/REPOSITORY_DELIVERY_PROTOCOL.md`, this
+item's status is "Implemented on branch," not "Merged / accepted on main," until a pull
+request merges and post-merge checks are run from `main`.
 
-**Epic description**  
-As NBCC and Lucentrix, we want evidence that a query genuinely resolves to the correct
-human service end-to-end (retrieval → journey → escalation → named contact), and a design
-for *measuring* that resolution over time — without ever collecting or requiring real
-student data to do so. Measurement design, not measurement execution against real users,
-is this day's deliverable.
+**Epic acceptance criteria — all met, evidence-based, not narrative claims**:
 
-**Epic acceptance criteria**
+- Five service-resolution traces created, one per canonical journey, using real
+  deterministic-pipeline output (not fabricated results). Three journeys
+  (`academic_support`, `wellbeing_safety`, `general_contact`) are demonstrated end-to-end
+  correctly. Two (`accessibility_inclusion`, `financial_support`) have a disclosed,
+  honestly-documented content-coverage gap — 2 of 7 approved sources
+  (`NBCC-SS-004`, `NBCC-SS-006`) are not yet curated — with routing-logic correctness
+  proven separately by existing unit tests. See `docs/design-partner-readiness/service-resolution-traces.md`.
+- A privacy-safe measurement design defines what a future pilot could measure and
+  explicitly states what is not collected or implemented now. See
+  `docs/design-partner-readiness/measurement-design.md`.
+- A dual learner/staff handoff demonstration, using the corrected GQ-04 scenario, shows a
+  coherent handoff with a clearly labeled "demonstration-only handoff packet — not a live
+  case-management record." See `docs/design-partner-readiness/dual-perspective-demo.md`.
+- A governance/evidence dossier, executive narrative, baseline/value worksheet
+  (distinguishing cash savings, capacity release, cost avoidance, and retention
+  hypotheses without asserting any of them), and a draft, unapproved 90-day pilot charter
+  were produced. See `docs/design-partner-readiness/`.
+- No LLM, embeddings, vector database, new dependency, external integration,
+  authentication, analytics, real student data, or live workflow was introduced.
+  `lib/`, `app/`, `knowledge/curated/`, `policies/`, and `package.json` are all
+  unmodified — this increment is documentation only, verified with `git diff --stat`.
+- Full test suite (152/152), build, and production-mode gating re-verified from this
+  branch (see `learning-log/DAY_05_07.md`).
 
-- A defined, reproducible method demonstrates, for each of the five journeys, that a
-  representative query resolves to a named, correct human contact with full traceability
-  (source → journey → escalation decision → contact).
-- A privacy-safe measurement design exists (e.g., synthetic or anonymized query sets,
-  aggregate-only metrics) that could, in principle, monitor resolution quality over time
-  without collecting real student identities, free-text disclosures, or any personal data.
-- The measurement design explicitly states what it does *not* do: no logging of real
-  student queries, no persistent per-user tracking, no analytics against individuals.
-- All five journeys are covered by the resolution proof, including the GQ-04 case (subject
-  to Day 4's fix landing first).
+## Content Coverage Follow-Up (Not Started, Surfaced by Days 5–7)
 
-### Day 5 Backlog Items
-
-- [ ] D5-01 Define and document a "service-resolution proof" method: for each journey, a
-      representative query, its full retrieval → journey → escalation trace, and the
-      resulting named human contact, evidenced from the deterministic pipeline (no
-      fabricated examples).
-- [ ] D5-02 Design (not implement against real users) a privacy-safe measurement approach:
-      what would be measured, using what synthetic or aggregate data, with an explicit
-      statement of what is out of bounds (real student identities, free-text content
-      retention, individual-level tracking).
-- [ ] D5-03 Document how the existing `/dev/*` inspectors already provide the underlying
-      evidence this measurement design would aggregate, without requiring new
-      infrastructure to be built prematurely.
-- [ ] D5-04 Record Day 5 evidence, the measurement design, and open questions in
-      `learning-log/DAY_05.md`.
-
-## Day 6 — Dual Learner/Staff Handoff Demonstration (Planned)
-
-### Day 6 Epic – Demonstrate the Handoff From Both Sides
-
-**Epic description**  
-As NBCC and Lucentrix, we want to demonstrate the same escalation event from both
-perspectives: what a learner experiences when a query is escalated, and what a staff
-member would need to receive to act on that handoff. This proves the handoff is coherent
-and complete without building a staff-facing product surface prematurely.
-
-**Epic acceptance criteria**
-
-- A demonstrable walkthrough shows a learner's query reaching an escalation decision and
-  the resulting human-contact information they would see.
-- A parallel walkthrough shows what a staff member at the named contact service would need
-  to know to act on that same escalation (query context, trigger, journey, timestamp) —
-  documented, not necessarily a built staff UI.
-- The two walkthroughs are shown side by side so the handoff can be reviewed for
-  completeness and safety by a non-technical stakeholder.
-- No new personal data, authentication, or staff-facing product surface is built unless
-  and until explicitly scoped as its own increment.
-
-### Day 6 Backlog Items
-
-- [ ] D6-01 Script and document a learner-side walkthrough for at least one query per
-      journey, using the existing deterministic pipeline and dev inspectors as evidence.
-- [ ] D6-02 Document the corresponding staff-side handoff view: what information the named
-      contact service would need, derived only from the escalation decision's existing
-      fields (trigger, journey, target service, reason) — no new data collection.
-- [ ] D6-03 Produce a combined learner/staff demonstration script or view suitable for a
-      non-technical audience, clearly labeled as a demonstration, not a live handoff
-      integration.
-- [ ] D6-04 Record Day 6 evidence, the dual-perspective walkthroughs, and limitations in
-      `learning-log/DAY_06.md`.
-
-## Day 7 — Design-Partner Readiness (Planned)
-
-### Day 7 Epic – Ready for a Design-Partner Conversation
-
-**Epic description**  
-As NBCC and Lucentrix, we want the concept demonstrator, its evidence, and its governance
-documentation to be ready for a design-partner conversation — a candid discussion with a
-prospective institutional partner about what has been proven, what has not, and what a
-pilot would require. This is not a production release and does not expand product scope.
-
-**Epic acceptance criteria**
-
-- A final governance audit confirms the Charter, Scope and policies remain intact: public
-  sources only; no personal data, LLM, authentication, SIMS/Brightspace, case management,
-  analytics, or public deployment.
-- A clean, repeatable test/build/production-smoke run is recorded and fully green,
-  including Day 4's GQ-04 fix.
-- A concise design-partner-readiness pack explains purpose, boundaries, the
-  service-resolution proof (Day 5), the learner/staff handoff demonstration (Day 6),
-  evidence, known limitations, and explicit next-step options — framed as a conversation
-  starter, not a sales claim.
-- A reviewed, product-owner-approved baseline is merged to `main` and tagged only after
-  final checks pass.
-
-### Day 7 Backlog Items
-
-- [ ] D7-01 Conduct a final scope and governance audit against `PRODUCT_CHARTER.md`,
-      `SCOPE.md`, policies, and `AI_OPERATING_INSTRUCTIONS.md`.
-- [ ] D7-02 Run final clean-install/reproducibility, `npm test`, `npm run build`, and
-      production-mode smoke checks; confirm dev-only routes remain 404-gated.
-- [ ] D7-03 Prepare a concise design-partner-readiness pack: purpose, boundaries, the Day 5
-      resolution proof, the Day 6 handoff demonstration, evidence, known limitations, and
-      next-step options.
-- [ ] D7-04 Create a reviewed baseline through a PR merged to `main` and a version tag,
-      only after all final checks are green and product-owner approval is recorded.
-- [ ] D7-05 Record the final design-partner-readiness decision, evidence, open risks, and
-      post-demo follow-up candidates in `learning-log/DAY_07.md`.
+- [ ] D-FUTURE-01 Curate `NBCC-SS-004` (Accessibility and Inclusion Services) and
+      `NBCC-SS-006` (Student Loans) into `knowledge/curated/`, following the exact
+      process already used for NBCC-SS-001/002/005 (`learning-log/DAY_02_D2-01.md`).
+      **Why this matters**: `docs/design-partner-readiness/service-resolution-traces.md`
+      (Traces 4–5) shows that `accessibility_inclusion` and `financial_support` queries
+      do not resolve correctly end-to-end today, though their routing logic is separately
+      proven correct (`tests/routing.test.ts`). Closing this would bring all five
+      canonical journeys to the same evidentiary standard. Not started; not scoped as
+      part of Days 5–7, which is a documentation/evidence increment, not a content-curation
+      increment.
 
 ## Post-Demo Discovery — Not Product Scope Until Validated
 
