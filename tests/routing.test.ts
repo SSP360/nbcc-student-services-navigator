@@ -8,7 +8,7 @@ function makeResult(overrides: Partial<RetrievalResult>): RetrievalResult {
     url: 'https://nbcc.ca/test',
     domain: 'general_student_services',
     score: 10,
-    matched_terms: [{ term: 'test', inTitle: true, inDomain: false, bodyOccurrences: 0 }],
+    matched_terms: [{ term: 'test', inTitle: true, inDomain: false, bodyOccurrences: 0, documentFrequency: 1, isExclusiveTerm: false }],
     snippet: '',
     ...overrides,
   }

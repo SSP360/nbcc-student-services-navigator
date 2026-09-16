@@ -33,8 +33,7 @@
       "grounding": "Page names the Campus Sexual Assault Support Advocate (CSASA) and sexual violence resources.",
       "expected_journey": "wellbeing_safety",
       "expected_escalation": true,
-      "expected_escalation_target_id": "NBCC-SS-005",
-      "known_defect_note": "This question is EXPECTED to route to wellbeing_safety (its correct domain per grounding above), but the router currently produces academic_support, because journey routing uses the top-1 retrieval result and NBCC-SS-002 currently outranks NBCC-SS-005 for this query (D2-FU-01: footer-boilerplate near-miss, score 45 vs. 44). This is a known, currently-failing test case, deliberately left failing as documented evidence of D2-FU-01's effect on the routing layer — it is NOT weakened or bypassed to force a pass. Escalation is unaffected: the crisis_or_safety trigger matches 'assault'/'violence' in the query text directly (independent of retrieval/journey) and always targets NBCC-SS-005 (Wellness and Counselling), so this question still escalates correctly to the right human contact despite the journey-label defect."
+      "expected_escalation_target_id": "NBCC-SS-005"
     },
     {
       "id": "GQ-05",
