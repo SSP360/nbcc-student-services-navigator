@@ -49,7 +49,7 @@ Status: all items implemented, tested, and built successfully on branch `feat/d2
 - Analytics dashboard
 - Public deployment
 
-## Day 0 — Repository Reconciliation and Delivery Hygiene (In progress)
+## Day 0 — Repository Reconciliation and Delivery Hygiene (Merged / accepted on main)
 
 **Why this exists**: verified inspection (`git log`, `gh pr view 4`, direct `git diff`
 against `main`) found that Day 3's product-owner acceptance and its actual integration
@@ -70,11 +70,25 @@ detail: `product/REPOSITORY_DELIVERY_PROTOCOL.md` and `product/RECONCILIATION_CH
       - The GQ-04 defect is recorded honestly, not concealed — **confirmed**, see below.
       - Backlog and roadmap content that had drifted onto the (already-merged) feature
         branch is brought onto `main` via this Day 0 reconciliation pull request.
-- [ ] D0-02 Adopt `product/REPOSITORY_DELIVERY_PROTOCOL.md` and
+- [x] D0-02 Adopt `product/REPOSITORY_DELIVERY_PROTOCOL.md` and
       `product/RECONCILIATION_CHECKLIST.md` as the standing process for every future
-      increment. Closed only once this Day 0 pull request itself is merged and its
-      post-merge (Reconcile-step) checks have been run from the resulting `main` SHA, per
-      the protocol's own rule.
+      increment. **Closed**: PR #5 ("Day 0: Repository reconciliation and delivery
+      hygiene") is merged into `main`.
+
+**Post-merge reconciliation verification (2026-09-16)**: PR #5 confirmed merged.
+`git fetch origin && git switch main && git pull --ff-only origin main` fast-forwarded
+cleanly to SHA **`be85fa7b934b037d77ae83737e7136bd9b95c7b4`**. From that SHA, a clean
+install (`rm -rf node_modules .next && npm ci`) followed by `npm test` reported
+**1 failed / 146 passed / 147 total** — the sole failure is the known GQ-04
+journey-classification case (`expected_journey: "wellbeing_safety"`,
+actual `"academic_support"`), confirmed unchanged and undisguised;
+`npm run build` passed, generating all 10 routes; production-mode gating confirmed
+`/api/dev/sources`, `/api/dev/retrieval`, and `/api/dev/routing` all return 404 and
+`/api/health` returns 200. Full detail: `learning-log/DAY_00.md`.
+
+**Day 0 status: Merged / accepted on main.** All four completion criteria in
+`product/RECONCILIATION_CHECKLIST.md` are satisfied (PR merged, `merged:true` confirmed,
+`main` SHA recorded, post-merge checks run from that SHA).
 
 ## Day 3 — Policy-Driven Routing and Escalation (No Model) (Merged / accepted on main)
 
@@ -108,13 +122,16 @@ contains this Day 3 work, verified by direct file inspection and by running `npm
 is **"Merged / accepted on main,"** not "pending merge" — that earlier status is now stale
 and is corrected here rather than left standing.
 
-## Day 4 — Retrieval Robustness and Journey Correction (Blocked — blocked by Day 0 completion)
+## Day 4 — Retrieval Robustness and Journey Correction (Planned — unblocked, not started)
 
-**Blocked by**: `product/REPOSITORY_DELIVERY_PROTOCOL.md`'s rule that no new implementation
-branch starts until the Day 0 reconciliation pull request is merged into `main` and its
-post-merge checks have been run from the resulting `main` SHA. Day 4 must branch from that
-post-Day-0 `main`, not from any pre-Day-0 branch, to avoid repeating the branch-drift
-finding this reconciliation exists to fix.
+**Unblocked (2026-09-16)**: `product/REPOSITORY_DELIVERY_PROTOCOL.md`'s rule required no
+new implementation branch to start until the Day 0 reconciliation pull request merged into
+`main` and its post-merge checks ran from the resulting `main` SHA. Both are now confirmed
+(PR #5 merged; post-merge `npm test`/`npm run build`/production-gating verified from `main`
+SHA `be85fa7` — see `learning-log/DAY_00.md`). **Day 4 has not been started**: no branch
+has been created and no implementation work has occurred. When it begins, it must branch
+from this verified `main` SHA (`be85fa7`), not from any earlier or pre-Day-0 branch, to
+avoid repeating the branch-drift finding this reconciliation exists to fix.
 
 **Narrow scope, restated as the closing definition of done for D2-FU-01**: this item is
 strictly a retrieval-quality fix. Its definition of done is `tests/routing-escalation-golden-questions.test.ts`'s
