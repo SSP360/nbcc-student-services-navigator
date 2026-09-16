@@ -1,14 +1,12 @@
 {
-  "generated_at": "2026-09-15T19:20:42.536Z",
+  "generated_at": "2026-09-16T10:44:07.157Z",
   "total_questions": 10,
   "metrics": {
     "journey_classification_accuracy": {
-      "pass_count": 9,
+      "pass_count": 10,
       "total": 10,
-      "rate": "9/10",
-      "known_failures": [
-        "GQ-04"
-      ]
+      "rate": "10/10",
+      "known_failures": []
     },
     "escalation_trigger_accuracy": {
       "pass_count": 10,
@@ -23,12 +21,7 @@
       "note": "Only questions where expected_escalation=true and an expected_escalation_target_id is defined are counted. Among the 10 golden questions, only GQ-04 currently escalates."
     }
   },
-  "known_defect": {
-    "id": "GQ-04",
-    "description": "Journey classification for GQ-04 is expected to be wellbeing_safety (its correct domain) but the router currently produces academic_support, because journey routing uses the top-1 retrieval result and NBCC-SS-002 currently outranks NBCC-SS-005 for this question. This is the known D2-FU-01 footer-boilerplate near-miss (score 45 vs 44), tracked separately in product/BACKLOG.md and explicitly out of scope for Day 3.",
-    "escalation_unaffected": "Escalation-trigger and escalation-target accuracy for GQ-04 are both correct: the crisis_or_safety trigger matches the query text directly (independent of retrieval/journey) and always targets NBCC-SS-005 (Wellness and Counselling)."
-  },
-  "note": "This snapshot reports the honest, current state. expected_journey values in evals/golden_questions.json reflect product-intended (correct) behavior, not the system's current output. The journey_classification_accuracy known_failures list is preserved as documented evidence of D2-FU-01 affecting the routing layer and must not be edited to force a 10/10 pass without the underlying defect actually being fixed.",
+  "note": "Regenerated on Day 4 after the D2-FU-01 document-frequency exclusive-term fix in lib/retrieval.ts (see learning-log/DAY_04.md). Journey classification accuracy reached 10/10; the GQ-04 known-defect record from Day 3 no longer applies.",
   "results": [
     {
       "id": "GQ-01",
@@ -43,8 +36,7 @@
       "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null,
-      "known_defect_note": null
+      "escalation_target_match": null
     },
     {
       "id": "GQ-02",
@@ -59,8 +51,7 @@
       "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null,
-      "known_defect_note": null
+      "escalation_target_match": null
     },
     {
       "id": "GQ-03",
@@ -75,15 +66,14 @@
       "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null,
-      "known_defect_note": null
+      "escalation_target_match": null
     },
     {
       "id": "GQ-04",
       "question": "Is there support for sexual violence or assault on campus?",
       "expected_journey": "wellbeing_safety",
-      "actual_journey": "academic_support",
-      "journey_match": false,
+      "actual_journey": "wellbeing_safety",
+      "journey_match": true,
       "expected_escalation": true,
       "actual_escalation": true,
       "escalation_trigger_match": true,
@@ -91,8 +81,7 @@
       "escalation_matched_term": "assault",
       "expected_escalation_target_id": "NBCC-SS-005",
       "actual_escalation_target_id": "NBCC-SS-005",
-      "escalation_target_match": true,
-      "known_defect_note": "This question is EXPECTED to route to wellbeing_safety (its correct domain per grounding above), but the router currently produces academic_support, because journey routing uses the top-1 retrieval result and NBCC-SS-002 currently outranks NBCC-SS-005 for this query (D2-FU-01: footer-boilerplate near-miss, score 45 vs. 44). This is a known, currently-failing test case, deliberately left failing as documented evidence of D2-FU-01's effect on the routing layer — it is NOT weakened or bypassed to force a pass. Escalation is unaffected: the crisis_or_safety trigger matches 'assault'/'violence' in the query text directly (independent of retrieval/journey) and always targets NBCC-SS-005 (Wellness and Counselling), so this question still escalates correctly to the right human contact despite the journey-label defect."
+      "escalation_target_match": true
     },
     {
       "id": "GQ-05",
@@ -107,8 +96,7 @@
       "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null,
-      "known_defect_note": null
+      "escalation_target_match": null
     },
     {
       "id": "GQ-06",
@@ -123,8 +111,7 @@
       "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null,
-      "known_defect_note": null
+      "escalation_target_match": null
     },
     {
       "id": "GQ-07",
@@ -139,8 +126,7 @@
       "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null,
-      "known_defect_note": null
+      "escalation_target_match": null
     },
     {
       "id": "GQ-08",
@@ -155,8 +141,7 @@
       "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null,
-      "known_defect_note": null
+      "escalation_target_match": null
     },
     {
       "id": "GQ-09",
@@ -171,8 +156,7 @@
       "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null,
-      "known_defect_note": null
+      "escalation_target_match": null
     },
     {
       "id": "GQ-10",
@@ -187,8 +171,7 @@
       "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null,
-      "known_defect_note": null
+      "escalation_target_match": null
     }
   ]
 }

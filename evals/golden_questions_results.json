@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-09-15T15:18:00.163Z",
+  "generated_at": "2026-09-16T10:44:07.146Z",
   "corpus_size": 3,
   "total_questions": 10,
-  "top1_pass_count": 9,
-  "top1_pass_rate": "9/10",
+  "top1_pass_count": 10,
+  "top1_pass_rate": "10/10",
   "top3_pass_count": 10,
   "top3_pass_rate": "10/10",
   "success_measure": "At least 8 of 10 golden questions return an expected source in the top three results (Day 2 epic, Issue #2)",
   "success_measure_met": true,
-  "note": "With a 3-document corpus, \"top 3\" is a weak bar on its own since it can include the entire corpus; top-1 pass rate is reported alongside for a more meaningful signal.",
+  "note": "Regenerated on Day 4 after the D2-FU-01 document-frequency exclusive-term fix in lib/retrieval.ts. All 10 questions now match on top-1, not only top-3.",
   "results": [
     {
       "id": "GQ-01",
@@ -95,7 +95,7 @@
       "ranked_results": [
         {
           "source_id": "NBCC-SS-005",
-          "score": 48,
+          "score": 78,
           "matched_terms": [
             "mywellness",
             "get",
@@ -136,21 +136,21 @@
       ],
       "ranked_results": [
         {
-          "source_id": "NBCC-SS-002",
-          "score": 45,
-          "matched_terms": [
-            "support",
-            "campus"
-          ]
-        },
-        {
           "source_id": "NBCC-SS-005",
-          "score": 44,
+          "score": 60,
           "matched_terms": [
             "support",
             "sexual",
             "violence",
             "assault",
+            "campus"
+          ]
+        },
+        {
+          "source_id": "NBCC-SS-002",
+          "score": 45,
+          "matched_terms": [
+            "support",
             "campus"
           ]
         },
@@ -163,7 +163,7 @@
           ]
         }
       ],
-      "top1_match": false,
+      "top1_match": true,
       "top3_match": true
     },
     {
@@ -222,7 +222,7 @@
       "ranked_results": [
         {
           "source_id": "NBCC-SS-002",
-          "score": 19,
+          "score": 53,
           "matched_terms": [
             "nitap",
             "peer",
@@ -257,7 +257,7 @@
       "ranked_results": [
         {
           "source_id": "NBCC-SS-002",
-          "score": 13,
+          "score": 21,
           "matched_terms": [
             "recordings",
             "orientation",
@@ -292,7 +292,7 @@
       "ranked_results": [
         {
           "source_id": "NBCC-SS-001",
-          "score": 46,
+          "score": 76,
           "matched_terms": [
             "nbcc",
             "early",
@@ -330,7 +330,7 @@
       "ranked_results": [
         {
           "source_id": "NBCC-SS-001",
-          "score": 45,
+          "score": 49,
           "matched_terms": [
             "programs",
             "services",
@@ -371,7 +371,7 @@
       "ranked_results": [
         {
           "source_id": "NBCC-SS-001",
-          "score": 56,
+          "score": 58,
           "matched_terms": [
             "nbcc",
             "student",

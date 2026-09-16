@@ -35,7 +35,7 @@ Status: all items implemented, tested, and built successfully on branch `feat/d2
 
 ## Day 2 — Follow-up Candidates (Not Started)
 
-- [ ] D2-FU-01 **(Day 4 priority — see Day 3 acceptance note below)** Improve retrieval robustness by stripping footer boilerplate and/or reweighting generic terms (e.g., "support", "campus") for sensitive queries such as sexual-violence support. **Known limitation observed in Day 2**: caused a top-1 near-miss on golden question GQ-04 (NBCC-SS-002 scored 45 vs. NBCC-SS-005's 44; NBCC-SS-005 still placed second, within top 3). Evidence: `evals/golden_questions_results.json` (GQ-04 entry), `learning-log/DAY_02.md`. **Day 3 update**: the same ranking issue now also surfaces as a journey-routing mislabel for GQ-04 (`lib/routing.ts` reports `academic_support` instead of `wellbeing_safety`, since journey routing uses the top-1 retrieval result). The escalation layer (`lib/escalation.ts`) compensates for this specific safety-critical case by routing crisis/safety disclosures to Wellness and Counselling directly, independent of journey — but other, non-crisis queries in an affected domain would not have that compensation. See `learning-log/DAY_03.md`. **Acceptance criterion for closing this item**: `tests/routing-escalation-golden-questions.test.ts`'s GQ-04 journey assertion (`expected_journey: "wellbeing_safety"`) passes, and the aggregate journey-classification-accuracy metric in `evals/routing_escalation_results.json` reaches 10/10. Still not started; explicitly excluded from Day 3; designated the priority item for Day 4.
+- [x] D2-FU-01 **(Closed, Day 4)** Improve retrieval robustness for sensitive queries such as sexual-violence support. **Original limitation (Day 2)**: caused a top-1 near-miss on golden question GQ-04 (NBCC-SS-002 scored 45 vs. NBCC-SS-005's 44). **Resolved (2026-09-16)** on branch `feat/day-04-retrieval-robustness` via a document-frequency exclusive-term weighting fix in `lib/retrieval.ts` (a query term occurring in exactly one curated document's body receives a deterministic 3× weight on its body contribution) — not footer stripping, which was diagnosed and confirmed score-neutral for this case. GQ-04 now scores NBCC-SS-005 at 60 vs. NBCC-SS-002 at 45 (margin 15, up from a 1-point gap with the wrong winner). Evidence: `learning-log/DAY_04.md` (root cause, rejected alternatives, before/after scores), `tests/retrieval.test.ts` (focused regression tests), `evals/golden_questions_results.json` and `evals/routing_escalation_results.json` (regenerated from real execution: journey classification 10/10, escalation-trigger 10/10, escalation-target 1/1, retrieval top-1 10/10).
 
 ## Explicitly deferred
 
@@ -122,16 +122,22 @@ contains this Day 3 work, verified by direct file inspection and by running `npm
 is **"Merged / accepted on main,"** not "pending merge" — that earlier status is now stale
 and is corrected here rather than left standing.
 
-## Day 4 — Retrieval Robustness and Journey Correction (Planned — unblocked, not started)
+## Day 4 — Retrieval Robustness and Journey Correction (Complete — implemented on branch, pending merge)
 
 **Unblocked (2026-09-16)**: `product/REPOSITORY_DELIVERY_PROTOCOL.md`'s rule required no
 new implementation branch to start until the Day 0 reconciliation pull request merged into
-`main` and its post-merge checks ran from the resulting `main` SHA. Both are now confirmed
+`main` and its post-merge checks ran from the resulting `main` SHA. Both were confirmed
 (PR #5 merged; post-merge `npm test`/`npm run build`/production-gating verified from `main`
-SHA `be85fa7` — see `learning-log/DAY_00.md`). **Day 4 has not been started**: no branch
-has been created and no implementation work has occurred. When it begins, it must branch
-from this verified `main` SHA (`be85fa7`), not from any earlier or pre-Day-0 branch, to
-avoid repeating the branch-drift finding this reconciliation exists to fix.
+SHA `be85fa7` — see `learning-log/DAY_00.md`) before Day 4 began.
+
+**Complete (2026-09-16)** on branch `feat/day-04-retrieval-robustness`, based on `main` @
+`425c7026f27870553b5d90c3e764d5d007969ede`. D2-FU-01 is closed (see above); GQ-04's
+journey classification is now `wellbeing_safety`, matching the intended value, with
+journey classification, escalation-trigger, and escalation-target accuracy all at their
+required levels. Full detail: `learning-log/DAY_04.md`. Per
+`product/REPOSITORY_DELIVERY_PROTOCOL.md`, this item's status is "Implemented on branch,"
+not "Merged / accepted on main," until a pull request merges and post-merge checks are
+run from `main` — this branch has not been merged.
 
 **Narrow scope, restated as the closing definition of done for D2-FU-01**: this item is
 strictly a retrieval-quality fix. Its definition of done is `tests/routing-escalation-golden-questions.test.ts`'s
@@ -159,11 +165,11 @@ As NBCC and Lucentrix, we want the Student Services Navigator to fix the known r
 
 ### Day 4 Backlog Items
 
-- [ ] D4-01 Analyse D2-FU-01 retrieval behaviour and footer boilerplate impact in detail (GQ-04 and at least 2–3 similar queries), and document a concrete retrieval-logic strategy (e.g., footer stripping, generic-term deweighting, or field-aware matching) in `learning-log/DAY_04.md`.
-- [ ] D4-02 Implement retrieval robustness improvements in `lib/retrieval.ts` (and/or supporting helpers) to reduce footer boilerplate noise and make GQ-04 and similar queries match NBCC-SS-005 as their primary, wellbeing/safety source, without breaking existing Day 2 success cases.
-- [ ] D4-03 Re-run retrieval, routing, and escalation evaluations (`tests/golden-questions.test.ts`, `tests/routing-escalation-golden-questions.test.ts`) and update `evals/golden_questions_results.json` and `evals/routing_escalation_results.json` to reflect the new, fully-green state (10/10 journey, 10/10 escalation-trigger, 1/1 escalation-target for GQ-04).
-- [ ] D4-04 Update `learning-log/DAY_04.md` and `product/BACKLOG.md` to record the retrieval changes, evidence, and any residual limitations, and to mark D2-FU-01 as closed once GQ-04's journey test passes and journey accuracy reaches 10/10.
-- [ ] D4-05 Run full `npm test` and `npm run build` as the Day 4 acceptance gate, confirming that all suites are green (no deliberate failing tests remain) and that production-mode dev routes remain correctly 404-gated.
+- [x] D4-01 Analysed D2-FU-01 retrieval behaviour in detail against the real engine (GQ-04 plus 3 nearby variants), and documented the diagnosed root cause (domain-substring false positive + no discriminating-power weighting) and two rejected alternatives (uniform frequency cap, "full domain phrase" match — both empirically tested and shown to regress GQ-02/GQ-10) in `learning-log/DAY_04.md`. Footer boilerplate was diagnosed and confirmed score-neutral, not the actual cause.
+- [x] D4-02 Implemented a document-frequency exclusive-term weighting fix in `lib/retrieval.ts`: a query term occurring in exactly one curated document's body receives a deterministic 3× multiplier on its body-match contribution. GQ-04 now matches NBCC-SS-005 as its primary result (score 60 vs. 45), with no other golden question's classification, ranking, or escalation behaviour changed.
+- [x] D4-03 Re-ran retrieval, routing, and escalation evaluations and updated `evals/golden_questions_results.json` and `evals/routing_escalation_results.json` from real execution: 10/10 journey, 10/10 escalation-trigger, 1/1 escalation-target, 10/10 retrieval top-1 (up from 9/10).
+- [x] D4-04 Updated `learning-log/DAY_04.md` and `product/BACKLOG.md`; D2-FU-01 marked closed above.
+- [x] D4-05 Ran full `npm test` (152/152 passing, no deliberately failing test remains) and `npm run build` (passed, 10 routes) as the Day 4 acceptance gate; confirmed production-mode dev routes (`/api/dev/sources`, `/api/dev/retrieval`, `/api/dev/routing`) remain 404-gated and `/api/health` returns 200.
 
 ## Day 5 — Service-Resolution Proof and Privacy-Safe Measurement Design (Planned)
 

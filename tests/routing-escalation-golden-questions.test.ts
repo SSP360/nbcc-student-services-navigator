@@ -97,7 +97,7 @@ describe('Golden Questions — Routing and Escalation Evaluation (Day 3)', () =>
     })
   })
 
-  test('METRIC — journey classification accuracy: 9 of 10 (GQ-04 is a documented, known-failing case; see known_defect_note)', () => {
+  test('METRIC — journey classification accuracy: 10 of 10 (D2-FU-01 fixed; GQ-04 no longer a known-failing case)', () => {
     let passCount = 0
     const details: { id: string; expected: string; actual: string }[] = []
 
@@ -110,16 +110,16 @@ describe('Golden Questions — Routing and Escalation Evaluation (Day 3)', () =>
     }
 
     const mismatches = details.filter((d) => d.expected !== d.actual)
-    // eslint-disable-next-line no-console
-    console.log('Journey classification mismatches (expected, honest):', JSON.stringify(mismatches, null, 2))
+    if (mismatches.length > 0) {
+      // eslint-disable-next-line no-console
+      console.error('Journey classification mismatches:', JSON.stringify(mismatches, null, 2))
+    }
 
-    // This asserts the ACTUAL, HONEST current count (9), not the intended
-    // count (10). If this ever needs to change, it must change because the
-    // underlying behavior genuinely changed (e.g. D2-FU-01 fixed raises
-    // this to 10, or a regression drops it below 9) — never edited merely
-    // to keep the suite green.
-    expect(passCount).toBe(9)
-    expect(mismatches.map((m) => m.id)).toEqual(['GQ-04'])
+    // This asserts the actual, honest current count. If this regresses
+    // below 10, that is a real defect to investigate — never edit this
+    // assertion merely to keep the suite green.
+    expect(passCount).toBe(10)
+    expect(mismatches).toEqual([])
   })
 
   test('METRIC — escalation-trigger accuracy: 10 of 10', () => {
@@ -157,16 +157,19 @@ describe('Golden Questions — Routing and Escalation Evaluation (Day 3)', () =>
     expect(passCount).toBe(escalatingQuestions.length)
   })
 
-  test('GQ-04 escalation target is correct (NBCC-SS-005) despite its journey-classification defect', () => {
+  test('GQ-04 journey and escalation target are both correct (D2-FU-01 fixed)', () => {
     const gq04 = golden.questions.find((q) => q.id === 'GQ-04')!
     const results = searchCuratedSources(gq04.question, corpus)
     const routing = routeQuery(gq04.question, results)
     const escalation = decideEscalation(gq04.question, routing.journey, results.length)
 
-    // Documents the actual, current, known-wrong journey label...
-    expect(routing.journey).toBe('academic_support')
-    // ...while proving escalation-trigger and escalation-target are both
-    // still correct, independent of that journey defect.
+    // Journey classification is now correct following the Day 4 /
+    // D2-FU-01 document-frequency exclusive-term fix in lib/retrieval.ts.
+    expect(routing.journey).toBe('wellbeing_safety')
+    // Escalation-trigger and escalation-target were already correct even
+    // before the fix (independent of the journey/retrieval-ranking
+    // defect); this continues to hold and is asserted here as a
+    // regression guard.
     expect(escalation.should_escalate).toBe(true)
     expect(escalation.trigger).toBe('crisis_or_safety')
     expect(escalation.target_service_id).toBe('NBCC-SS-005')
