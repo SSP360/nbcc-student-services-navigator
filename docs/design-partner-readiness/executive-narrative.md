@@ -14,14 +14,15 @@ no language model, no embeddings, no external AI service — that:
 3. Correctly identifies sensitive or complex questions and escalates them to a named
    human contact — a safety property that is *independent of the retrieval ranking*,
    verified by a real bug found and fixed during development (`learning-log/DAY_03.md`).
-4. Does all of this with 10/10 accuracy on its current evaluation set, using a
+4. Does all of this with 12/12 accuracy on its current evaluation set, using a
    repeatable, inspectable evaluation method — not a one-time demo run
    (`evals/routing_escalation_results.json`).
 
-Three of five canonical journeys are demonstrated end-to-end today
-(`service-resolution-traces.md`); the other two have proven-correct routing logic but
-require curating two more already-approved public sources to close the loop — a small,
-well-understood, scoped task, disclosed rather than hidden.
+All five canonical journeys are demonstrated end-to-end today
+(`service-resolution-traces.md`) — the two content-coverage gaps disclosed in Days 5–7
+(accessibility, financial support) were closed in a subsequent increment (P0) by curating
+the two already-approved public sources named there, and a related escalation-hardening
+gap found in the process was fixed at the same time.
 
 ## What This Demonstrator Does Not Prove
 

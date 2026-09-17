@@ -16,6 +16,12 @@
 If any single document in this package appears to contradict the labels above, treat the
 labels above as authoritative and flag the discrepancy.
 
+**Since Days 5–7**: the P0 increment (`feat/p0-five-journey-ux`) curated the two remaining
+approved sources named below as a content-coverage gap, hardened one escalation target,
+and replaced the Day 1 concept-shell homepage with a working learner UI at `/` (backed by
+the production-safe `GET /api/navigate`). This package's documents have been updated in
+place to reflect that; see `learning-log/P0_COVERAGE_UX.md` for the full record.
+
 ## Contents
 
 | Document | What it covers |
@@ -57,7 +63,7 @@ Every quantitative claim traces to a command you can run against this repository
 
 ```bash
 npm ci
-npm test              # 152+ tests, includes all evaluation-adjacent assertions
+npm test              # 177+ tests, includes all evaluation-adjacent assertions
 npm run build         # confirms the application builds cleanly
 npm run dev            # then query http://localhost:3000/api/dev/routing?q=<your question>
 ```

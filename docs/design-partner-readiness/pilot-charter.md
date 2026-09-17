@@ -16,15 +16,15 @@ this project has deliberately deferred (see Exclusions).
 
 ## Candidate Service Journeys
 
-Limited to journeys with existing curated evidence unless the design partner specifically
-wants to prioritize closing the `accessibility_inclusion`/`financial_support` content gap
-first (see `service-resolution-traces.md`):
+All five canonical journeys now have curated evidence (the `accessibility_inclusion`/
+`financial_support` content gap disclosed in Days 5–7 was closed in P0; see
+`service-resolution-traces.md`):
 
 - `academic_support`
 - `wellbeing_safety`
 - `general_contact`
-- (`accessibility_inclusion` and `financial_support` only if the design partner
-  approves curating the two additional currently-uncurated sources first)
+- `accessibility_inclusion`
+- `financial_support`
 
 ## Public or Approved Non-Sensitive Knowledge Boundary
 
