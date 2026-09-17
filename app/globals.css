@@ -161,6 +161,14 @@ input:focus-visible {
   outline-offset: 2px;
 }
 
+/* The result region is focused programmatically after a selection/
+   submission (A-05) purely so screen readers and keyboard users land on
+   the new content; it is not a normal tab stop (tabIndex=-1), so it does
+   not need — and should not show — a visible focus ring of its own. */
+[tabindex='-1']:focus {
+  outline: none;
+}
+
 .submit-button {
   margin-top: 1rem;
   padding: 0.75rem 1.5rem;
