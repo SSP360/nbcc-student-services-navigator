@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, FormEvent } from 'react'
+import { useState, useRef, useEffect, FormEvent } from 'react'
 import type { ResolutionResult } from '@/lib/resolution/types'
 
 interface CategoryCard {
@@ -24,6 +24,17 @@ export default function Home() {
   const [result, setResult] = useState<ResolutionResult | null>(null)
   const [status, setStatus] = useState<Status>('empty')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const resultRegionRef = useRef<HTMLDivElement>(null)
+
+  // A-05: move focus to the result region after a selection/submission, so
+  // both keyboard and screen-reader users land where the new content is
+  // instead of staying wherever they clicked without any indication that
+  // the page changed below.
+  useEffect(() => {
+    if (status === 'result' || status === 'error') {
+      resultRegionRef.current?.focus()
+    }
+  }, [status])
 
   async function fetchResolution(params: string) {
     setStatus('loading')
@@ -109,7 +120,7 @@ export default function Home() {
         </button>
       </form>
 
-      <div aria-live="polite">
+      <div aria-live="polite" ref={resultRegionRef} tabIndex={-1}>
         {status === 'empty' && (
           <p className="empty-state">
             Choose a category above, or describe your need in your own words, to get started.
@@ -161,6 +172,14 @@ export default function Home() {
   )
 }
 
+const STATE_HEADINGS: Record<ResolutionResult['state'], string> = {
+  confident_route: 'Recommended service',
+  guided_choice: 'A few options that might fit',
+  human_assisted: 'Connecting you with a person',
+  unsupported_query: "We couldn't find a specific match",
+  safety_escalation: 'Urgent support',
+}
+
 function ResultCard({
   result,
   onRecovery,
@@ -172,6 +191,7 @@ function ResultCard({
 }) {
   return (
     <div className={`result-card result-card--${result.state}`}>
+      <h2>{STATE_HEADINGS[result.state]}</h2>
       {result.state === 'safety_escalation' && result.escalation && (
         <div className="danger-notice" role="alert">
           {result.escalation.message}
