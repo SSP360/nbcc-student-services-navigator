@@ -52,3 +52,23 @@ describe('/api/resolve — production-safe resolution endpoint', () => {
     expect(data.journey).not.toBe('academic_support')
   })
 })
+
+describe('/api/resolve — internal errors never leak to the client (C-07)', () => {
+  test('a thrown internal error produces a generic, safe message, not the raw exception text', async () => {
+    jest.resetModules()
+    jest.doMock('@/lib/resolution/engine', () => ({
+      resolveFreeText: () => {
+        throw new Error('Approved source NBCC-SS-999 has no P0.2 lifecycle record (see docs/SOURCE_ONBOARDING.md)')
+      },
+      resolveCategory: jest.fn(),
+      resolveRecovery: jest.fn(),
+    }))
+    const { GET: mockedGet } = require('@/app/api/resolve/route')
+    const response = await mockedGet(makeRequest('q=anything'))
+    const data = await response.json()
+    expect(response.status).toBe(500)
+    expect(data.error).not.toMatch(/NBCC-SS-999|SOURCE_ONBOARDING|lifecycle record/)
+    jest.dontMock('@/lib/resolution/engine')
+    jest.resetModules()
+  })
+})

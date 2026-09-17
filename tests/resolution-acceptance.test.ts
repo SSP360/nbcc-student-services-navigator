@@ -128,6 +128,43 @@ describe('C-01 / C-02: confidence gate behaviour', () => {
   })
 })
 
+describe('Independent review regressions (F-12/F-13 overfit + C-07 message leak)', () => {
+  test('a student-card query with an incidental financial term is still unsupported_query, not a confident financial route', () => {
+    // Found by independent review: "replacement student card fees" was
+    // resolving to confident_route -> financial_support purely because
+    // "fees" is a registered financial term, reproducing F-12's named
+    // forbidden outcome under different wording than the exact fixture
+    // string.
+    const result = resolveFreeText('replacement student card fees')
+    expect(result.state).toBe('unsupported_query')
+  })
+
+  test('a student-card query with an incidental academic term is still unsupported_query, never academic_support', () => {
+    // Found by independent review: "my student card is broken, can I
+    // still study?" was resolving to confident_route -> academic_support —
+    // the exact outcome F-12 forbids.
+    const result = resolveFreeText('my student card is broken, can I still study?')
+    expect(result.state).toBe('unsupported_query')
+    expect(result.journey).not.toBe('academic_support')
+  })
+
+  test('a Wi-Fi query with an incidental generic term is still unsupported_query', () => {
+    const result = resolveFreeText('wifi is down in my dorm')
+    expect(result.state).toBe('unsupported_query')
+  })
+
+  test('a guided_choice message never contains raw internal journey keys', () => {
+    // Found by independent review: the message field interpolated
+    // "financial_support, accessibility, wellbeing_safety" — internal
+    // snake_case identifiers — directly into learner-facing text (a C-07
+    // leak through a string field, not a missing property).
+    const result = resolveFreeText('I’m stressed, need accommodation, and can’t pay fees')
+    expect(result.state).toBe('guided_choice')
+    expect(result.message).not.toMatch(/financial_support|wellbeing_safety|academic_support|general_student_services/)
+    expect(result.message).not.toMatch(/accessibility/)
+  })
+})
+
 describe('C-03: close plausible low-risk routes become guided_choice', () => {
   test('a query naming two plausible journeys becomes guided_choice, not a coin-flip route', () => {
     const result = resolveFreeText('I need tutoring but I am also broke')

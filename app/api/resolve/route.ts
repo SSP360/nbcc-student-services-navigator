@@ -48,9 +48,15 @@ export async function GET(
     }
 
     return NextResponse.json({ error: 'A category or question is required.' }, { status: 400 })
-  } catch (error) {
+  } catch {
+    // Deliberately does not forward the caught error's message: an internal
+    // exception (e.g. lib/resolution/sources.ts's "no lifecycle record"
+    // governance error) could contain repository paths or internal
+    // governance detail that has no place in learner-facing output (C-07),
+    // a leak path an independent review found even though it was not
+    // reachable with today's committed source data.
     return NextResponse.json(
-      { error: `Resolution error: ${error instanceof Error ? error.message : String(error)}` },
+      { error: 'Something went wrong finding a service for you. Please try again or contact NBCC directly.' },
       { status: 500 }
     )
   }
