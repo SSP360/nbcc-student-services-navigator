@@ -21,6 +21,34 @@ import { ResolutionJourney } from './types'
  * docs/P0_SPRINT_EXECUTION_PLAN.md, "Reusable work identified") rather than
  * silently sharing a list whose governance belongs to a different module.
  */
+/**
+ * Known out-of-coverage topics (docs/SOURCE_COVERAGE_MATRIX.md's "Explicit
+ * current gaps"). A match here forces `unsupported_query` regardless of any
+ * other journey term also present in the same query — added after an
+ * independent review found that a query like "my student card is broken,
+ * can I still study?" was resolving to `confident_route` -> academic_support
+ * (the exact forbidden outcome named in F-12) purely because "study" is a
+ * registered academic term and no countervailing signal existed to say
+ * "this query is fundamentally about something we don't cover." Checked
+ * after safety (which always wins) and before ordinary journey matching.
+ */
+export const OUT_OF_SCOPE_TERMS: string[] = [
+  'student card',
+  'id card',
+  'campus card',
+  'replacement card',
+  'wifi',
+  'wi-fi',
+  'wireless internet',
+  'internet connection',
+  'network connection',
+  'transcript',
+  'transcripts',
+  'parking',
+  'library card',
+  'off-campus housing',
+]
+
 export const SAFETY_TERMS: string[] = [
   'sexual assault',
   'sexually assaulted',
@@ -170,6 +198,12 @@ export function matchesSafetyTerm(query: string): string | null {
 export function matchGenericTerms(query: string): string[] {
   const lower = normalize(query)
   return GENERIC_TERMS.filter((t) => containsTerm(lower, t))
+}
+
+/** True if a known out-of-coverage topic is present (see OUT_OF_SCOPE_TERMS above). */
+export function matchesOutOfScopeTerm(query: string): string | null {
+  const lower = normalize(query)
+  return OUT_OF_SCOPE_TERMS.find((t) => containsTerm(lower, t)) ?? null
 }
 
 /**

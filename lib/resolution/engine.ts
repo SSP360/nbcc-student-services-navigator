@@ -1,6 +1,6 @@
 import { ResolutionJourney, ResolutionResult, ResolutionState, safetyOverridesEverything } from './types'
 import { getActiveSourcesForJourney, getApprovedSourceById } from './sources'
-import { matchesSafetyTerm, matchJourneys } from './registry'
+import { matchesSafetyTerm, matchesOutOfScopeTerm, matchJourneys } from './registry'
 
 /**
  * The resolution-first navigation engine (P0.1). Every public function here
@@ -99,7 +99,7 @@ export function buildUnsupportedQuery(): ResolutionResult {
 }
 
 /** Close, plausible, low-risk, or multi-intent need (F-15). Fixed choices, never a free-text loop. */
-export function buildGuidedChoice(matchedJourneys: ResolutionJourney[]): ResolutionResult {
+export function buildGuidedChoice(): ResolutionResult {
   const options: ResolutionResult['options'] = [
     { label: 'Academic support', journey: 'academic_support' },
     { label: 'Money, fees, and financial aid', journey: 'financial_support' },
@@ -108,10 +108,16 @@ export function buildGuidedChoice(matchedJourneys: ResolutionJourney[]): Resolut
     { label: 'General student services', journey: 'general_student_services' },
     { label: "I'm not sure", journey: 'unsure' },
   ]
-  const journeyList = matchedJourneys.length > 0 ? ` (this sounded like it could involve more than one area: ${matchedJourneys.join(', ')})` : ''
+  // Deliberately does not name the matched internal journey keys in the
+  // message (an earlier version interpolated them, e.g. "...involve more
+  // than one area: financial_support, accessibility..." — an internal
+  // identifier leak into learner-facing text, found by independent review,
+  // and also plain-language-unfriendly, A-08). The options list below
+  // already gives the student every plain-language choice; the prose does
+  // not need to repeat it in internal form.
   return {
     state: 'guided_choice',
-    message: `This could involve more than one area${journeyList}. Choose the one that best matches what you need right now, or say you're not sure.`,
+    message: "This could involve more than one area. Choose the one that best matches what you need right now, or say you're not sure.",
     primaryAction: { label: 'Choose the closest match below', href: undefined },
     recoveryAction: recoveryAction(),
     options,
@@ -167,6 +173,16 @@ export function resolveFreeText(query: string): ResolutionResult {
     return buildUnsupportedQuery()
   }
 
+  // A known out-of-coverage topic (e.g. "student card", "wifi") forces
+  // unsupported_query even when the query also happens to contain another
+  // journey's meaningful term (e.g. "my student card is broken, can I
+  // still study?") — otherwise a single incidental word could produce a
+  // confident but wrong route to an unrelated service, which is exactly
+  // what F-12/F-13 forbid. Checked before ordinary journey matching.
+  if (matchesOutOfScopeTerm(trimmed)) {
+    return buildUnsupportedQuery()
+  }
+
   const journeyMatches = matchJourneys(trimmed)
   const journeysWithMatch = Array.from(journeyMatches.keys()).filter(
     (j) => (journeyMatches.get(j) ?? []).length >= MIN_MEANINGFUL_TERMS_FOR_CONFIDENT_ROUTE
@@ -179,7 +195,7 @@ export function resolveFreeText(query: string): ResolutionResult {
   // Second-place margin check: any journey beyond the first with at least
   // MIN_SECOND_PLACE_MARGIN meaningful hits blocks a confident route.
   if (journeysWithMatch.length >= 1 + MIN_SECOND_PLACE_MARGIN) {
-    return buildGuidedChoice(journeysWithMatch)
+    return buildGuidedChoice()
   }
 
   return buildConfidentRoute(journeysWithMatch[0])
@@ -205,14 +221,14 @@ export function resolveCategory(category: CategoryKey): ResolutionResult {
     return buildSafetyEscalation()
   }
   if (category === 'unsure') {
-    return buildGuidedChoice([])
+    return buildGuidedChoice()
   }
   return buildConfidentRoute(category)
 }
 
 /** F-18: "This is not the right service." Never a dead end. */
 export function resolveRecovery(): ResolutionResult {
-  return buildGuidedChoice([])
+  return buildGuidedChoice()
 }
 
 export type { ResolutionState, ResolutionResult, ResolutionJourney }

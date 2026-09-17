@@ -1,4 +1,4 @@
-import { matchesSafetyTerm, matchGenericTerms, matchJourneys } from '@/lib/resolution/registry'
+import { matchesSafetyTerm, matchGenericTerms, matchJourneys, matchesOutOfScopeTerm } from '@/lib/resolution/registry'
 
 describe('matchesSafetyTerm', () => {
   test('matches a direct safety term', () => {
@@ -31,6 +31,22 @@ describe('matchGenericTerms', () => {
     const generic = matchGenericTerms('student services help')
     expect(generic.length).toBeGreaterThan(0)
     expect(matchJourneys('student services help').size).toBe(0)
+  })
+})
+
+describe('matchesOutOfScopeTerm', () => {
+  test('detects "student card" regardless of other words present', () => {
+    expect(matchesOutOfScopeTerm('replacement student card fees')).toBeTruthy()
+    expect(matchesOutOfScopeTerm('my student card is broken, can I still study?')).toBeTruthy()
+  })
+
+  test('detects "wifi" variants', () => {
+    expect(matchesOutOfScopeTerm('wifi is down in my dorm')).toBeTruthy()
+    expect(matchesOutOfScopeTerm('My Wi-Fi isn’t working')).toBeTruthy()
+  })
+
+  test('returns null for an ordinary in-scope query', () => {
+    expect(matchesOutOfScopeTerm('I need extra time on an exam')).toBeNull()
   })
 })
 

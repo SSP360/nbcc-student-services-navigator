@@ -114,7 +114,7 @@ export default function DevRetrievalPage() {
                   </ul>
                   {r.snippet && (
                     <p style={{ marginTop: '0.75rem', fontStyle: 'italic', color: '#444' }}>
-                      "…{r.snippet}…"
+                      &ldquo;…{r.snippet}…&rdquo;
                     </p>
                   )}
                 </div>
