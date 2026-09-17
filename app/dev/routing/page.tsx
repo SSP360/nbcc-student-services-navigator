@@ -108,7 +108,7 @@ export default function DevRoutingPage() {
             <div className="source-metadata">
               <p><strong>Trigger:</strong> <code>{response.escalation.trigger}</code></p>
               {response.escalation.matched_term && (
-                <p><strong>Matched term:</strong> "{response.escalation.matched_term}"</p>
+                <p><strong>Matched term:</strong> &ldquo;{response.escalation.matched_term}&rdquo;</p>
               )}
               <p><strong>Reason:</strong> {response.escalation.reason}</p>
               {response.escalation.should_escalate && (
