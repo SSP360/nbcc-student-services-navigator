@@ -1,0 +1,19 @@
+{
+  "source_id": "NBCC-SS-006",
+  "title": "Student Loans",
+  "url": "https://nbcc.ca/paying-for-college/student-loans",
+  "domain": "financial_support",
+  "campuses": [
+    "all"
+  ],
+  "language": "en",
+  "source_type": "webpage",
+  "authority": "nbcc_public",
+  "review_status": "prototype_public_source",
+  "retrieval_timestamp": "2026-09-17T07:45:15.106Z",
+  "retrieval_method": "live-fetch",
+  "http_status": 200,
+  "content_length": 1679,
+  "extracted_text": "Student Loans\n\nYou may be eligible for financial assistance through both the Canada Student Loans and your Provincial/Territorial Student Loans programs (see definitions below).\n\nFor a detailed, step-by-step guide, see how to apply.\n\nNote: You will only need to submit one application, and you will automatically be assessed for provincial and federal loans simultaneously. You will also be assessed for any available grants and these grants don't need to be repaid.\nDefinitions\nHow Student Loans are Calculated\nPart-time Student Financial Assistance\nReturning Student Information\nImportant Things to Remember\nYour obligations as a Student Financial Assistance borrower\nRepayment of Financial Assistance\nContact information for National Student Loan Service Centre\nFrequently Asked Questions\nCampuses\n\nFredericton Campus  26 Duffie DriveFredericton, NB  E3B 0R6\nMiramichi Campus  80 University AvenueMiramichi, NB  E1N 0C6\nMoncton Campus  1234 Mountain RoadMoncton, NB  E1C 8H9\nSaint John Campus  950 Grandview AvenueSaint John, NB  E2J 4C5\nSt. Andrews Campus  99 Augustus StreetSt. Andrews, NB  E5B 2E9\nWoodstock Campus  100 Broadway StreetWoodstock, NB  E7M 5C5\n\nContact Us  Request for Information  Campuses: (506) 460-6222 |\n1-888-796-NBCC (6222)  Email: nbcc@nbcc.ca\n\nConnect With Us\nFacebookYouTubeInstagram\nX.comLinkedin\n\nNBCC campuses are located on Mi'kmaq, Wolastoq and Peskotomuhkati homelands. Since 1726 this land has been subject to treaties that are still in effect today. We are grateful to learn together on this land and do so guided by the original spirit of those treaties - peace, respect and friendship.\n\nPrivacy Policy© Copyright 2026. All Rights Reserved.",
+  "retrieval_error": null
+}

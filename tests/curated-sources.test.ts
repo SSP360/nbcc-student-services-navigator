@@ -11,9 +11,15 @@ import {
 import { getAllSources } from '@/lib/sources'
 
 describe('Curated Source Corpus — File Presence', () => {
-  test('exactly three curated source files exist', () => {
+  test('exactly five curated source files exist (P0: NBCC-SS-004 and NBCC-SS-006 curated)', () => {
     const ids = loadCuratedSourceIds()
-    expect(ids.length).toBe(3)
+    expect(ids.length).toBe(5)
+  })
+
+  test('NBCC-SS-004 (Accessibility) and NBCC-SS-006 (Financial) are included in the curated corpus', () => {
+    const ids = loadCuratedSourceIds()
+    expect(ids).toContain('NBCC-SS-004')
+    expect(ids).toContain('NBCC-SS-006')
   })
 
   test('NBCC-SS-001 is included in the curated corpus', () => {

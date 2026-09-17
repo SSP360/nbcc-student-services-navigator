@@ -55,10 +55,26 @@ const ACCOMMODATION_TERMS = [
 ]
 
 // ESCALATION_POLICY.md trigger 2: Academic/Financial Decisions
-// (eligibility, program selection, prerequisites, loan approval).
+// (eligibility, program selection, prerequisites).
 const PERSONALIZED_DECISION_TERMS = [
   'am i eligible', 'eligibility', 'should i take', 'which program should',
-  'loan approval', 'do i qualify', 'prerequisite for',
+  'do i qualify', 'prerequisite for',
+]
+
+// ESCALATION_POLICY.md trigger 2, financial-decision subset (P0 hardening).
+// A financially-framed decision question must always reach the named
+// financial contact (Contact Routes: "Financial support: Financial Aid
+// office (contact via NBCC-SS-007)"), never a journey-derived target. This
+// matters because `journey` here comes from keyword retrieval, which can be
+// wrong (see D-FUTURE-01 / the accessibility & financial curation gap
+// disclosed in docs/design-partner-readiness/service-resolution-traces.md)
+// — a wrong journey must not silently redirect a financial decision to an
+// unrelated human contact. Checked before the generic decision terms below
+// so a financial phrasing always wins the hardcoded route.
+const FINANCIAL_DECISION_TERMS = [
+  'loan approval', 'do i qualify for a loan', 'am i eligible for a loan',
+  'financial aid eligibility', 'grant eligibility', 'qualify for financial aid',
+  'eligible for student aid', 'eligible for a student loan',
 ]
 
 // ESCALATION_POLICY.md trigger 5: Urgent Timeframe.
@@ -156,6 +172,19 @@ export function decideEscalation(
       matched_term: accommodationMatch,
       ...resolveTargetService(JOURNEY_CONTACT_SOURCE.accessibility_inclusion),
       reason: `Query contains an accommodation-related term ("${accommodationMatch}"). Per ESCALATION_POLICY.md trigger 3 (Accessibility Accommodations), personalized accommodation requests require human assessment.`,
+    }
+  }
+
+  const financialDecisionMatch = findMatch(query, FINANCIAL_DECISION_TERMS)
+  if (financialDecisionMatch) {
+    // Hardcoded-safe, like crisis_or_safety and accommodation_request:
+    // independent of the (possibly wrong) retrieval-derived journey.
+    return {
+      should_escalate: true,
+      trigger: 'personalized_decision',
+      matched_term: financialDecisionMatch,
+      ...resolveTargetService(JOURNEY_CONTACT_SOURCE.financial_support),
+      reason: `Query contains a financial-decision term ("${financialDecisionMatch}"). Per ESCALATION_POLICY.md trigger 2 (Academic/Financial Decisions) and the Contact Routes table's named Financial Aid office, this always routes to the financial contact, independent of retrieval-derived journey.`,
     }
   }
 

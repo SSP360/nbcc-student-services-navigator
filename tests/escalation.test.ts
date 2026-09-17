@@ -103,6 +103,57 @@ describe('decideEscalation — personalized_decision trigger (ESCALATION_POLICY.
     const decision = decideEscalation('What are my chances of loan approval?', 'financial_support', 2)
     expect(decision.should_escalate).toBe(true)
     expect(decision.trigger).toBe('personalized_decision')
+    expect(decision.target_service_id).toBe('NBCC-SS-007')
+  })
+})
+
+describe('decideEscalation — financial personalized_decision hardening (P0)', () => {
+  // Regression test: a financially-framed decision query must reach the
+  // named financial contact even when the journey argument is wrong (as it
+  // can genuinely be today for financial_support queries — see
+  // docs/design-partner-readiness/service-resolution-traces.md, Trace 5).
+  // Before this hardening, target_service_id was derived from `journey`
+  // alone, so a wrong journey silently misrouted the learner.
+  test('financial decision query still targets the financial contact when journey is wrong', () => {
+    const decision = decideEscalation(
+      'Do I qualify for a loan if my grades are low?',
+      'academic_support', // deliberately wrong journey, simulating a weak/wrong retrieval result
+      2
+    )
+    expect(decision.should_escalate).toBe(true)
+    expect(decision.trigger).toBe('personalized_decision')
+    expect(decision.target_service_id).toBe('NBCC-SS-007')
+  })
+
+  test('financial decision query targets the financial contact when journey defaulted to general_contact', () => {
+    // retrievalResultCount > 0 so unmatched_query (higher priority) does not
+    // pre-empt this — simulates weak (not zero) retrieval that misranked
+    // the journey rather than finding nothing at all.
+    const decision = decideEscalation('Am I eligible for a student loan?', 'general_contact', 1)
+    expect(decision.trigger).toBe('personalized_decision')
+    expect(decision.target_service_id).toBe('NBCC-SS-007')
+  })
+
+  test('accommodation_request still targets NBCC-SS-004 even when journey is wrong (no regression)', () => {
+    const decision = decideEscalation('I need an accommodation for my exam', 'financial_support', 2)
+    expect(decision.trigger).toBe('accommodation_request')
+    expect(decision.target_service_id).toBe('NBCC-SS-004')
+  })
+
+  test('GQ-04 wording still targets NBCC-SS-005 regardless of journey argument (no regression)', () => {
+    const decision = decideEscalation(
+      'Is there support for sexual violence or assault on campus?',
+      'financial_support', // deliberately wrong journey
+      3
+    )
+    expect(decision.trigger).toBe('crisis_or_safety')
+    expect(decision.target_service_id).toBe('NBCC-SS-005')
+  })
+
+  test('a non-financial decision term still uses the journey-derived target (unhardened by design)', () => {
+    const decision = decideEscalation('Which program should I take next semester?', 'academic_support', 2)
+    expect(decision.trigger).toBe('personalized_decision')
+    expect(decision.target_service_id).toBe('NBCC-SS-002')
   })
 })
 

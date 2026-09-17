@@ -1,177 +1,178 @@
 {
-  "generated_at": "2026-09-16T10:44:07.157Z",
-  "total_questions": 10,
-  "metrics": {
-    "journey_classification_accuracy": {
-      "pass_count": 10,
-      "total": 10,
-      "rate": "10/10",
-      "known_failures": []
-    },
-    "escalation_trigger_accuracy": {
-      "pass_count": 10,
-      "total": 10,
-      "rate": "10/10",
-      "known_failures": []
-    },
-    "escalation_target_accuracy": {
-      "pass_count": 1,
-      "total": 1,
-      "rate": "1/1",
-      "note": "Only questions where expected_escalation=true and an expected_escalation_target_id is defined are counted. Among the 10 golden questions, only GQ-04 currently escalates."
-    }
-  },
-  "note": "Regenerated on Day 4 after the D2-FU-01 document-frequency exclusive-term fix in lib/retrieval.ts (see learning-log/DAY_04.md). Journey classification accuracy reached 10/10; the GQ-04 known-defect record from Day 3 no longer applies.",
+  "generated_at": "2026-09-17T07:58:14.271Z",
+  "generated_by": "real execution of lib/routing.ts routeQuery() and lib/escalation.ts decideEscalation() against evals/golden_questions.json",
+  "total_questions": 12,
+  "journey_classification_accuracy": "12/12",
+  "escalation_trigger_accuracy": "12/12",
+  "escalation_target_accuracy": "2/2",
   "results": [
     {
       "id": "GQ-01",
       "question": "Who do I contact for wellness and counselling support?",
       "expected_journey": "wellbeing_safety",
       "actual_journey": "wellbeing_safety",
-      "journey_match": true,
+      "journey_correct": true,
       "expected_escalation": false,
       "actual_escalation": false,
-      "escalation_trigger_match": true,
+      "escalation_trigger_correct": true,
       "escalation_trigger": "none",
-      "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null
+      "escalation_target_correct": null
     },
     {
       "id": "GQ-02",
       "question": "I'm feeling anxious, what resources does NBCC have?",
       "expected_journey": "wellbeing_safety",
       "actual_journey": "wellbeing_safety",
-      "journey_match": true,
+      "journey_correct": true,
       "expected_escalation": false,
       "actual_escalation": false,
-      "escalation_trigger_match": true,
+      "escalation_trigger_correct": true,
       "escalation_trigger": "none",
-      "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null
+      "escalation_target_correct": null
     },
     {
       "id": "GQ-03",
       "question": "What is myWellness and how do I get 24/7 mental health support?",
       "expected_journey": "wellbeing_safety",
       "actual_journey": "wellbeing_safety",
-      "journey_match": true,
+      "journey_correct": true,
       "expected_escalation": false,
       "actual_escalation": false,
-      "escalation_trigger_match": true,
+      "escalation_trigger_correct": true,
       "escalation_trigger": "none",
-      "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null
+      "escalation_target_correct": null
     },
     {
       "id": "GQ-04",
       "question": "Is there support for sexual violence or assault on campus?",
       "expected_journey": "wellbeing_safety",
       "actual_journey": "wellbeing_safety",
-      "journey_match": true,
+      "journey_correct": true,
       "expected_escalation": true,
       "actual_escalation": true,
-      "escalation_trigger_match": true,
+      "escalation_trigger_correct": true,
       "escalation_trigger": "crisis_or_safety",
-      "escalation_matched_term": "assault",
       "expected_escalation_target_id": "NBCC-SS-005",
       "actual_escalation_target_id": "NBCC-SS-005",
-      "escalation_target_match": true
+      "escalation_target_correct": true
     },
     {
       "id": "GQ-05",
       "question": "How can a Student Success Coach help me transition to college life?",
       "expected_journey": "academic_support",
       "actual_journey": "academic_support",
-      "journey_match": true,
+      "journey_correct": true,
       "expected_escalation": false,
       "actual_escalation": false,
-      "escalation_trigger_match": true,
+      "escalation_trigger_correct": true,
       "escalation_trigger": "none",
-      "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null
+      "escalation_target_correct": null
     },
     {
       "id": "GQ-06",
       "question": "What is the Nitap Peer Mentor Program?",
       "expected_journey": "academic_support",
       "actual_journey": "academic_support",
-      "journey_match": true,
+      "journey_correct": true,
       "expected_escalation": false,
       "actual_escalation": false,
-      "escalation_trigger_match": true,
+      "escalation_trigger_correct": true,
       "escalation_trigger": "none",
-      "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null
+      "escalation_target_correct": null
     },
     {
       "id": "GQ-07",
       "question": "Are there recordings of orientation sessions for new students?",
       "expected_journey": "academic_support",
       "actual_journey": "academic_support",
-      "journey_match": true,
+      "journey_correct": true,
       "expected_escalation": false,
       "actual_escalation": false,
-      "escalation_trigger_match": true,
+      "escalation_trigger_correct": true,
       "escalation_trigger": "none",
-      "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null
+      "escalation_target_correct": null
     },
     {
       "id": "GQ-08",
       "question": "What is NBCC's Early Alert and PASS program?",
       "expected_journey": "general_contact",
       "actual_journey": "general_contact",
-      "journey_match": true,
+      "journey_correct": true,
       "expected_escalation": false,
       "actual_escalation": false,
-      "escalation_trigger_match": true,
+      "escalation_trigger_correct": true,
       "escalation_trigger": "none",
-      "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null
+      "escalation_target_correct": null
     },
     {
       "id": "GQ-09",
       "question": "What programs and services are available to NBCC students overall?",
       "expected_journey": "general_contact",
       "actual_journey": "general_contact",
-      "journey_match": true,
+      "journey_correct": true,
       "expected_escalation": false,
       "actual_escalation": false,
-      "escalation_trigger_match": true,
+      "escalation_trigger_correct": true,
       "escalation_trigger": "none",
-      "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null
+      "escalation_target_correct": null
     },
     {
       "id": "GQ-10",
       "question": "What is the NBCC Student Learning Experience Charter?",
       "expected_journey": "general_contact",
       "actual_journey": "general_contact",
-      "journey_match": true,
+      "journey_correct": true,
       "expected_escalation": false,
       "actual_escalation": false,
-      "escalation_trigger_match": true,
+      "escalation_trigger_correct": true,
       "escalation_trigger": "none",
-      "escalation_matched_term": null,
       "expected_escalation_target_id": null,
       "actual_escalation_target_id": null,
-      "escalation_target_match": null
+      "escalation_target_correct": null
+    },
+    {
+      "id": "GQ-11",
+      "question": "How do I get academic accommodations if I have a disability or learning barrier?",
+      "expected_journey": "accessibility_inclusion",
+      "actual_journey": "accessibility_inclusion",
+      "journey_correct": true,
+      "expected_escalation": true,
+      "actual_escalation": true,
+      "escalation_trigger_correct": true,
+      "escalation_trigger": "accommodation_request",
+      "expected_escalation_target_id": "NBCC-SS-004",
+      "actual_escalation_target_id": "NBCC-SS-004",
+      "escalation_target_correct": true
+    },
+    {
+      "id": "GQ-12",
+      "question": "How do I apply for a Canada Student Loan or provincial student financial assistance?",
+      "expected_journey": "financial_support",
+      "actual_journey": "financial_support",
+      "journey_correct": true,
+      "expected_escalation": false,
+      "actual_escalation": false,
+      "escalation_trigger_correct": true,
+      "escalation_trigger": "none",
+      "expected_escalation_target_id": null,
+      "actual_escalation_target_id": null,
+      "escalation_target_correct": null
     }
   ]
 }

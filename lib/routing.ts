@@ -24,9 +24,7 @@ export const JOURNEYS: Journey[] = [
 
 /**
  * Maps a curated source's `domain` field (see knowledge/sources.yaml and
- * knowledge/curated/) to a canonical journey. Domains not present in the
- * current 3-source curated corpus (financial_support, accessibility) are
- * included for forward-compatibility as the corpus grows.
+ * knowledge/curated/) to a canonical journey.
  */
 const DOMAIN_TO_JOURNEY: Record<string, Journey> = {
   general_student_services: 'general_contact',
