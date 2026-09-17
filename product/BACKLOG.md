@@ -206,18 +206,41 @@ request merges and post-merge checks are run from `main`.
 - Full test suite (152/152), build, and production-mode gating re-verified from this
   branch (see `learning-log/DAY_05_07.md`).
 
-## Content Coverage Follow-Up (Not Started, Surfaced by Days 5–7)
+## Content Coverage Follow-Up (Closed by P0)
 
-- [ ] D-FUTURE-01 Curate `NBCC-SS-004` (Accessibility and Inclusion Services) and
+- [x] D-FUTURE-01 Curate `NBCC-SS-004` (Accessibility and Inclusion Services) and
       `NBCC-SS-006` (Student Loans) into `knowledge/curated/`, following the exact
       process already used for NBCC-SS-001/002/005 (`learning-log/DAY_02_D2-01.md`).
-      **Why this matters**: `docs/design-partner-readiness/service-resolution-traces.md`
-      (Traces 4–5) shows that `accessibility_inclusion` and `financial_support` queries
-      do not resolve correctly end-to-end today, though their routing logic is separately
-      proven correct (`tests/routing.test.ts`). Closing this would bring all five
-      canonical journeys to the same evidentiary standard. Not started; not scoped as
-      part of Days 5–7, which is a documentation/evidence increment, not a content-curation
-      increment.
+      **Closed in P0** (`learning-log/P0_COVERAGE_UX.md`): both sources curated from
+      live approved pages; `accessibility_inclusion` and `financial_support` now resolve
+      correctly end-to-end (previously only their routing logic was proven correct).
+      `docs/design-partner-readiness/service-resolution-traces.md` Traces 4–5 updated
+      accordingly. All five canonical journeys are now at the same evidentiary standard.
+
+## P0 — Five-Journey Coverage and Learner Service-Resolution UX (Complete)
+
+Closes D-FUTURE-01 and replaces the Day 1 concept-shell homepage with a working learner
+experience over the real pipeline. See `learning-log/P0_COVERAGE_UX.md` for full evidence.
+
+- [x] Curated `NBCC-SS-004` and `NBCC-SS-006` from live approved public sources.
+- [x] Hardened `lib/escalation.ts`'s `personalized_decision` trigger so a financially-
+      framed decision query always reaches the named financial contact (NBCC-SS-007),
+      independent of a possibly-wrong retrieval-derived journey — matching the existing
+      hardcoded-safe pattern for `crisis_or_safety` and `accommodation_request`.
+- [x] Added GQ-11 (accessibility) and GQ-12 (financial_support) to
+      `evals/golden_questions.json`; all 12 golden questions pass retrieval, journey
+      classification, and escalation-trigger; both escalating questions
+      (GQ-04, GQ-11) pass escalation-target.
+- [x] Replaced `app/page.tsx`'s concept shell with a learner UX calling a new
+      production-safe endpoint, `GET /api/navigate` (`app/api/navigate/route.ts`), which
+      wraps the real deterministic pipeline in a plain-language, learner-safe response
+      shape (`lib/navigate.ts`) — no raw scores or matched-term detail, unlike the
+      development-only `/api/dev/routing`.
+- [x] 177/177 tests pass (165 pre-existing + 12 new); `npm run build` passes (11 routes);
+      production-mode gating re-verified (`/dev/*` and `/api/dev/*` 404, `/api/health`
+      and `/` and `/api/navigate` 200).
+- [x] No LLM, embedding, model, new npm dependency, external integration, authentication,
+      or real student data was introduced.
 
 ## Post-Demo Discovery — Not Product Scope Until Validated
 

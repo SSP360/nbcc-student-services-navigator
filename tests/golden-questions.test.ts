@@ -26,8 +26,8 @@ describe('Golden Questions — Repeatable Retrieval Evaluation', () => {
   const golden = loadGoldenQuestions()
   const corpus = loadAllCuratedSources()
 
-  test('exactly 10 golden questions are defined', () => {
-    expect(golden.questions.length).toBe(10)
+  test('exactly 12 golden questions are defined (P0: GQ-11/GQ-12 added)', () => {
+    expect(golden.questions.length).toBe(12)
   })
 
   test('every golden question references a source that exists in the curated corpus', () => {
@@ -50,7 +50,7 @@ describe('Golden Questions — Repeatable Retrieval Evaluation', () => {
     })
   })
 
-  test('at least 8 of 10 golden questions return an expected source in the top 3 (Day 2 success measure)', () => {
+  test('at least 10 of 12 golden questions return an expected source in the top 3 (Day 2 success measure, scaled)', () => {
     let passCount = 0
     const details: { id: string; question: string; passed: boolean; top3: string[] }[] = []
 
@@ -62,11 +62,11 @@ describe('Golden Questions — Repeatable Retrieval Evaluation', () => {
       details.push({ id: q.id, question: q.question, passed, top3: top3Ids })
     }
 
-    if (passCount < 8) {
+    if (passCount < 10) {
       console.error('Golden question failures:', JSON.stringify(details.filter((d) => !d.passed), null, 2))
     }
 
-    expect(passCount).toBeGreaterThanOrEqual(8)
+    expect(passCount).toBeGreaterThanOrEqual(10)
   })
 
   test('every result for every golden question explains its keyword match', () => {

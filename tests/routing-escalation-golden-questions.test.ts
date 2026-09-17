@@ -38,14 +38,10 @@ function loadGoldenQuestions(): GoldenQuestionsFile {
  * - Escalation-target accuracy: for questions that DO escalate, did it
  *   route to the correct human contact?
  *
- * GQ-04 has a known, currently-failing journey classification (see
- * evals/golden_questions.json "known_defect_note" and
- * product/BACKLOG.md D2-FU-01). expected_journey is intentionally set to
- * the PRODUCT-INTENDED value (wellbeing_safety), not the system's current
- * output, so this defect stays visible rather than being silently
- * absorbed into the test. The per-question test below for GQ-04's journey
- * is EXPECTED TO FAIL until D2-FU-01 is fixed. This is deliberate,
- * documented evidence — not skipped, inverted, or bypassed.
+ * GQ-04's journey classification defect (D2-FU-01) was fixed in Day 4 via
+ * document-frequency exclusive-term weighting in lib/retrieval.ts; all 12
+ * golden questions (10 original + GQ-11/GQ-12 added in P0 after curating
+ * NBCC-SS-004 and NBCC-SS-006) are expected to pass.
  */
 
 describe('Golden Questions — Routing and Escalation Evaluation (Day 3)', () => {
@@ -59,7 +55,7 @@ describe('Golden Questions — Routing and Escalation Evaluation (Day 3)', () =>
     })
   })
 
-  describe('per-question journey routing (KNOWN: GQ-04 currently fails — see note above)', () => {
+  describe('per-question journey routing', () => {
     golden.questions.forEach((q) => {
       test(`${q.id}: "${q.question}" routes to journey "${q.expected_journey}"`, () => {
         const results = searchCuratedSources(q.question, corpus)
@@ -97,7 +93,7 @@ describe('Golden Questions — Routing and Escalation Evaluation (Day 3)', () =>
     })
   })
 
-  test('METRIC — journey classification accuracy: 10 of 10 (D2-FU-01 fixed; GQ-04 no longer a known-failing case)', () => {
+  test('METRIC — journey classification accuracy: 12 of 12 (P0: GQ-11/GQ-12 added after curating NBCC-SS-004/006)', () => {
     let passCount = 0
     const details: { id: string; expected: string; actual: string }[] = []
 
@@ -116,13 +112,13 @@ describe('Golden Questions — Routing and Escalation Evaluation (Day 3)', () =>
     }
 
     // This asserts the actual, honest current count. If this regresses
-    // below 10, that is a real defect to investigate — never edit this
+    // below 12, that is a real defect to investigate — never edit this
     // assertion merely to keep the suite green.
-    expect(passCount).toBe(10)
+    expect(passCount).toBe(12)
     expect(mismatches).toEqual([])
   })
 
-  test('METRIC — escalation-trigger accuracy: 10 of 10', () => {
+  test('METRIC — escalation-trigger accuracy: 12 of 12', () => {
     let passCount = 0
     const details: { id: string; expected: boolean; actual: boolean; trigger: string }[] = []
 
@@ -143,7 +139,7 @@ describe('Golden Questions — Routing and Escalation Evaluation (Day 3)', () =>
     expect(passCount).toBe(golden.questions.length)
   })
 
-  test('METRIC — escalation-target accuracy: 1 of 1 (only GQ-04 among the 10 golden questions is expected to escalate)', () => {
+  test('METRIC — escalation-target accuracy: 2 of 2 (GQ-04 and GQ-11 are expected to escalate with a named target)', () => {
     const escalatingQuestions = golden.questions.filter((q) => q.expected_escalation && q.expected_escalation_target_id)
     let passCount = 0
 

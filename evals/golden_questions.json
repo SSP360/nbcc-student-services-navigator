@@ -1,6 +1,6 @@
 {
   "description": "Golden questions for retrieval, routing, and escalation evaluation. Each question is a realistic student query grounded in terms actually present in the curated corpus (knowledge/curated/). expected_source_ids lists the source(s) the retrieval should surface (Day 2). expected_journey and expected_escalation were added in Day 3 to evaluate deterministic journey routing and policy-driven escalation over the same questions; no existing field was changed.",
-  "corpus_size": 3,
+  "corpus_size": 5,
   "questions": [
     {
       "id": "GQ-01",
@@ -81,6 +81,23 @@
       "expected_source_ids": ["NBCC-SS-001"],
       "grounding": "'NBCC Student Learning Experience Charter' is explicitly named on the general Student Services page.",
       "expected_journey": "general_contact",
+      "expected_escalation": false
+    },
+    {
+      "id": "GQ-11",
+      "question": "How do I get academic accommodations if I have a disability or learning barrier?",
+      "expected_source_ids": ["NBCC-SS-004"],
+      "grounding": "Accessibility and Inclusion Services page: 'We accommodate students with various accessibility needs, learning disabilities and/or physical or mental barriers. Academic and service accommodations are considered for all students.' Added in P0 (five-journey coverage) after curating NBCC-SS-004.",
+      "expected_journey": "accessibility_inclusion",
+      "expected_escalation": true,
+      "expected_escalation_target_id": "NBCC-SS-004"
+    },
+    {
+      "id": "GQ-12",
+      "question": "How do I apply for a Canada Student Loan or provincial student financial assistance?",
+      "expected_source_ids": ["NBCC-SS-006"],
+      "grounding": "Student Loans page: 'You may be eligible for financial assistance through both the Canada Student Loans and your Provincial/Territorial Student Loans programs.' Added in P0 (five-journey coverage) after curating NBCC-SS-006.",
+      "expected_journey": "financial_support",
       "expected_escalation": false
     }
   ]

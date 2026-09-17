@@ -1,14 +1,9 @@
 {
-  "generated_at": "2026-09-16T10:44:07.146Z",
-  "corpus_size": 3,
-  "total_questions": 10,
-  "top1_pass_count": 10,
-  "top1_pass_rate": "10/10",
-  "top3_pass_count": 10,
-  "top3_pass_rate": "10/10",
-  "success_measure": "At least 8 of 10 golden questions return an expected source in the top three results (Day 2 epic, Issue #2)",
-  "success_measure_met": true,
-  "note": "Regenerated on Day 4 after the D2-FU-01 document-frequency exclusive-term fix in lib/retrieval.ts. All 10 questions now match on top-1, not only top-3.",
+  "generated_at": "2026-09-17T07:58:14.267Z",
+  "generated_by": "real execution of lib/retrieval.ts searchCuratedSources() against evals/golden_questions.json (see tests/routing-escalation-golden-questions.test.ts / tests/golden-questions.test.ts for the committed assertions)",
+  "total_questions": 12,
+  "top1_accuracy": "12/12",
+  "top3_accuracy": "12/12",
   "results": [
     {
       "id": "GQ-01",
@@ -16,40 +11,14 @@
       "expected_source_ids": [
         "NBCC-SS-005"
       ],
-      "ranked_results": [
-        {
-          "source_id": "NBCC-SS-005",
-          "score": 56,
-          "matched_terms": [
-            "contact",
-            "wellness",
-            "counselling",
-            "support"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-002",
-          "score": 30,
-          "matched_terms": [
-            "contact",
-            "wellness",
-            "counselling",
-            "support"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-001",
-          "score": 13,
-          "matched_terms": [
-            "contact",
-            "wellness",
-            "counselling",
-            "support"
-          ]
-        }
+      "top1": "NBCC-SS-005",
+      "top3": [
+        "NBCC-SS-005",
+        "NBCC-SS-002",
+        "NBCC-SS-004"
       ],
-      "top1_match": true,
-      "top3_match": true
+      "top1_correct": true,
+      "top3_correct": true
     },
     {
       "id": "GQ-02",
@@ -57,34 +26,14 @@
       "expected_source_ids": [
         "NBCC-SS-005"
       ],
-      "ranked_results": [
-        {
-          "source_id": "NBCC-SS-005",
-          "score": 28,
-          "matched_terms": [
-            "resources",
-            "nbcc"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-001",
-          "score": 25,
-          "matched_terms": [
-            "resources",
-            "nbcc"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-002",
-          "score": 21,
-          "matched_terms": [
-            "resources",
-            "nbcc"
-          ]
-        }
+      "top1": "NBCC-SS-005",
+      "top3": [
+        "NBCC-SS-005",
+        "NBCC-SS-001",
+        "NBCC-SS-002"
       ],
-      "top1_match": true,
-      "top3_match": true
+      "top1_correct": true,
+      "top3_correct": true
     },
     {
       "id": "GQ-03",
@@ -92,41 +41,14 @@
       "expected_source_ids": [
         "NBCC-SS-005"
       ],
-      "ranked_results": [
-        {
-          "source_id": "NBCC-SS-005",
-          "score": 78,
-          "matched_terms": [
-            "mywellness",
-            "get",
-            "24",
-            "mental",
-            "health",
-            "support"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-002",
-          "score": 35,
-          "matched_terms": [
-            "get",
-            "health",
-            "support"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-001",
-          "score": 13,
-          "matched_terms": [
-            "get",
-            "24",
-            "health",
-            "support"
-          ]
-        }
+      "top1": "NBCC-SS-005",
+      "top3": [
+        "NBCC-SS-005",
+        "NBCC-SS-002",
+        "NBCC-SS-001"
       ],
-      "top1_match": true,
-      "top3_match": true
+      "top1_correct": true,
+      "top3_correct": true
     },
     {
       "id": "GQ-04",
@@ -134,37 +56,14 @@
       "expected_source_ids": [
         "NBCC-SS-005"
       ],
-      "ranked_results": [
-        {
-          "source_id": "NBCC-SS-005",
-          "score": 60,
-          "matched_terms": [
-            "support",
-            "sexual",
-            "violence",
-            "assault",
-            "campus"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-002",
-          "score": 45,
-          "matched_terms": [
-            "support",
-            "campus"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-001",
-          "score": 18,
-          "matched_terms": [
-            "support",
-            "campus"
-          ]
-        }
+      "top1": "NBCC-SS-005",
+      "top3": [
+        "NBCC-SS-005",
+        "NBCC-SS-002",
+        "NBCC-SS-001"
       ],
-      "top1_match": true,
-      "top3_match": true
+      "top1_correct": true,
+      "top3_correct": true
     },
     {
       "id": "GQ-05",
@@ -172,46 +71,14 @@
       "expected_source_ids": [
         "NBCC-SS-002"
       ],
-      "ranked_results": [
-        {
-          "source_id": "NBCC-SS-002",
-          "score": 81,
-          "matched_terms": [
-            "student",
-            "success",
-            "coach",
-            "help",
-            "transition",
-            "college",
-            "life"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-001",
-          "score": 47,
-          "matched_terms": [
-            "student",
-            "success",
-            "coach",
-            "help",
-            "college"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-005",
-          "score": 24,
-          "matched_terms": [
-            "student",
-            "success",
-            "help",
-            "transition",
-            "college",
-            "life"
-          ]
-        }
+      "top1": "NBCC-SS-002",
+      "top3": [
+        "NBCC-SS-002",
+        "NBCC-SS-001",
+        "NBCC-SS-005"
       ],
-      "top1_match": true,
-      "top3_match": true
+      "top1_correct": true,
+      "top3_correct": true
     },
     {
       "id": "GQ-06",
@@ -219,34 +86,14 @@
       "expected_source_ids": [
         "NBCC-SS-002"
       ],
-      "ranked_results": [
-        {
-          "source_id": "NBCC-SS-002",
-          "score": 53,
-          "matched_terms": [
-            "nitap",
-            "peer",
-            "mentor",
-            "program"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-001",
-          "score": 7,
-          "matched_terms": [
-            "program"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-005",
-          "score": 1,
-          "matched_terms": [
-            "program"
-          ]
-        }
+      "top1": "NBCC-SS-002",
+      "top3": [
+        "NBCC-SS-002",
+        "NBCC-SS-001",
+        "NBCC-SS-004"
       ],
-      "top1_match": true,
-      "top3_match": true
+      "top1_correct": true,
+      "top3_correct": true
     },
     {
       "id": "GQ-07",
@@ -254,34 +101,14 @@
       "expected_source_ids": [
         "NBCC-SS-002"
       ],
-      "ranked_results": [
-        {
-          "source_id": "NBCC-SS-002",
-          "score": 21,
-          "matched_terms": [
-            "recordings",
-            "orientation",
-            "new",
-            "students"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-005",
-          "score": 4,
-          "matched_terms": [
-            "students"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-001",
-          "score": 2,
-          "matched_terms": [
-            "new"
-          ]
-        }
+      "top1": "NBCC-SS-002",
+      "top3": [
+        "NBCC-SS-002",
+        "NBCC-SS-004",
+        "NBCC-SS-005"
       ],
-      "top1_match": true,
-      "top3_match": true
+      "top1_correct": true,
+      "top3_correct": true
     },
     {
       "id": "GQ-08",
@@ -289,37 +116,14 @@
       "expected_source_ids": [
         "NBCC-SS-001"
       ],
-      "ranked_results": [
-        {
-          "source_id": "NBCC-SS-001",
-          "score": 76,
-          "matched_terms": [
-            "nbcc",
-            "early",
-            "alert",
-            "pass",
-            "program"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-005",
-          "score": 23,
-          "matched_terms": [
-            "nbcc",
-            "program"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-002",
-          "score": 20,
-          "matched_terms": [
-            "nbcc",
-            "program"
-          ]
-        }
+      "top1": "NBCC-SS-001",
+      "top3": [
+        "NBCC-SS-001",
+        "NBCC-SS-005",
+        "NBCC-SS-004"
       ],
-      "top1_match": true,
-      "top3_match": true
+      "top1_correct": true,
+      "top3_correct": true
     },
     {
       "id": "GQ-09",
@@ -327,40 +131,14 @@
       "expected_source_ids": [
         "NBCC-SS-001"
       ],
-      "ranked_results": [
-        {
-          "source_id": "NBCC-SS-001",
-          "score": 49,
-          "matched_terms": [
-            "programs",
-            "services",
-            "available",
-            "nbcc"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-002",
-          "score": 33,
-          "matched_terms": [
-            "services",
-            "available",
-            "nbcc",
-            "students"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-005",
-          "score": 32,
-          "matched_terms": [
-            "services",
-            "available",
-            "nbcc",
-            "students"
-          ]
-        }
+      "top1": "NBCC-SS-001",
+      "top3": [
+        "NBCC-SS-001",
+        "NBCC-SS-004",
+        "NBCC-SS-002"
       ],
-      "top1_match": true,
-      "top3_match": true
+      "top1_correct": true,
+      "top3_correct": true
     },
     {
       "id": "GQ-10",
@@ -368,40 +146,44 @@
       "expected_source_ids": [
         "NBCC-SS-001"
       ],
-      "ranked_results": [
-        {
-          "source_id": "NBCC-SS-001",
-          "score": 58,
-          "matched_terms": [
-            "nbcc",
-            "student",
-            "learning",
-            "experience",
-            "charter"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-002",
-          "score": 55,
-          "matched_terms": [
-            "nbcc",
-            "student",
-            "learning",
-            "experience"
-          ]
-        },
-        {
-          "source_id": "NBCC-SS-005",
-          "score": 33,
-          "matched_terms": [
-            "nbcc",
-            "student",
-            "experience"
-          ]
-        }
+      "top1": "NBCC-SS-001",
+      "top3": [
+        "NBCC-SS-001",
+        "NBCC-SS-002",
+        "NBCC-SS-004"
       ],
-      "top1_match": true,
-      "top3_match": true
+      "top1_correct": true,
+      "top3_correct": true
+    },
+    {
+      "id": "GQ-11",
+      "question": "How do I get academic accommodations if I have a disability or learning barrier?",
+      "expected_source_ids": [
+        "NBCC-SS-004"
+      ],
+      "top1": "NBCC-SS-004",
+      "top3": [
+        "NBCC-SS-004",
+        "NBCC-SS-002",
+        "NBCC-SS-001"
+      ],
+      "top1_correct": true,
+      "top3_correct": true
+    },
+    {
+      "id": "GQ-12",
+      "question": "How do I apply for a Canada Student Loan or provincial student financial assistance?",
+      "expected_source_ids": [
+        "NBCC-SS-006"
+      ],
+      "top1": "NBCC-SS-006",
+      "top3": [
+        "NBCC-SS-006",
+        "NBCC-SS-002",
+        "NBCC-SS-001"
+      ],
+      "top1_correct": true,
+      "top3_correct": true
     }
   ]
 }
